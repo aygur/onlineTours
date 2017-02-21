@@ -1,5 +1,7 @@
 package com.naraikin.onlineturs.tables;
 
+import com.naraikin.onlineturs.threads.Counter;
+
 import javax.xml.bind.JAXBException;
 
 /**
@@ -7,11 +9,12 @@ import javax.xml.bind.JAXBException;
  */
 public interface DAOI {
 
-    void insertAllRowDB();
+    void insertAllRowDB(Counter counter);
     void selectAllRowDB();
 
-    void saveXML() throws JAXBException;
-    void parseXML() throws JAXBException;
+    void saveXML();
+    void parseXML();
 
+    void deleteTableData();
     void resetAUTO_INCREMENT();
 }

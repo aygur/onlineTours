@@ -94,4 +94,36 @@ public class Tour {
     public void setCity(String city) {
         this.city = city;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tour tour = (Tour) o;
+
+        if (idtur != tour.idtur) return false;
+        if (booking != tour.booking) return false;
+        if (dateStart != null ? !dateStart.equals(tour.dateStart) : tour.dateStart != null) return false;
+        if (dateFinish != null ? !dateFinish.equals(tour.dateFinish) : tour.dateFinish != null) return false;
+        if (tur_type != null ? !tur_type.equals(tour.tur_type) : tour.tur_type != null) return false;
+        if (menu_type != null ? !menu_type.equals(tour.menu_type) : tour.menu_type != null) return false;
+        if (cost != null ? !cost.equals(tour.cost) : tour.cost != null) return false;
+        if (hotel != null ? !hotel.equals(tour.hotel) : tour.hotel != null) return false;
+        return city != null ? city.equals(tour.city) : tour.city == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idtur;
+        result = 31 * result + (dateStart != null ? dateStart.hashCode() : 0);
+        result = 31 * result + (dateFinish != null ? dateFinish.hashCode() : 0);
+        result = 31 * result + (tur_type != null ? tur_type.hashCode() : 0);
+        result = 31 * result + (menu_type != null ? menu_type.hashCode() : 0);
+        result = 31 * result + (cost != null ? cost.hashCode() : 0);
+        result = 31 * result + (int) booking;
+        result = 31 * result + (hotel != null ? hotel.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        return result;
+    }
 }

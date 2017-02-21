@@ -10,20 +10,16 @@ import javax.xml.bind.JAXBException;
 public class InsertTableThread extends Thread {
 
     private DAOI daoi;
+   final private Counter counter;
 
-    public InsertTableThread(DAOI daoi){
+    public InsertTableThread(DAOI daoi, Counter counter){
         this.daoi = daoi;
-        this.start();
+        this.counter = counter;
     }
     @Override
     public void run() {
-
-        try {
-            daoi.parseXML();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        daoi.parseXML();
         daoi.resetAUTO_INCREMENT();
-        daoi.insertAllRowDB();
+        daoi.insertAllRowDB(this.counter);
     }
 }

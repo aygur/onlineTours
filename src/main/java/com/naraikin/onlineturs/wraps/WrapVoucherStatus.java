@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by dmitrii on 19.02.17.
  */
-@XmlRootElement(name = "VoucherStatuses")
+@XmlRootElement(name = "voucherStatuses")
 public class WrapVoucherStatus {
 
     private List<VoucherStatus> listVoucherStatus = new ArrayList<VoucherStatus>();
@@ -19,7 +19,7 @@ public class WrapVoucherStatus {
         return listVoucherStatus;
     }
 
-    @XmlElement(name = "VoucherStatus")
+    @XmlElement(name = "voucherStatus")
     public void setListVoucherStatus(List<VoucherStatus> listVoucherStatus) {
         this.listVoucherStatus = listVoucherStatus;
     }

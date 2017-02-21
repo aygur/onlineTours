@@ -23,4 +23,15 @@ public class ParentDAO {
             e.printStackTrace();
         }
     }
+
+    public void deleteTableData() {
+        String sqlReq = "DELETE FROM "+ tableName;
+        try {
+            Statement statement =
+                    statement = MysqlConnect.getDbCon().createStatement();
+            Boolean rs = statement.execute(sqlReq);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

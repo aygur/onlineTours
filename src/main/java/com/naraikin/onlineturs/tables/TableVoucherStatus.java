@@ -4,7 +4,10 @@ import com.naraikin.onlineturs.databasemanager.MysqlConnect;
 import com.naraikin.onlineturs.models.VoucherStatus;
 import com.naraikin.onlineturs.parser.Parser;
 import com.naraikin.onlineturs.parser.impl.JaxbParser;
+import com.naraikin.onlineturs.threads.Counter;
 import com.naraikin.onlineturs.wraps.WrapVoucherStatus;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
@@ -15,6 +18,11 @@ import java.sql.*;
  */
 
 public class TableVoucherStatus extends ParentDAO implements DAOI {
+
+    public static final Logger logger = Logger.getLogger(TableVoucherStatus.class);
+    static {
+        DOMConfigurator.configure("src/main/resources/log4j.xml");
+    }
 
     private WrapVoucherStatus wrapVoucherStatus = new WrapVoucherStatus();
     private File file = new File("VoucherStatuses.xml");
@@ -32,7 +40,6 @@ public class TableVoucherStatus extends ParentDAO implements DAOI {
             Statement statement =
             MysqlConnect.getDbCon().createStatement();
 
-
             ResultSet rs = statement.executeQuery(sqlReq);
 
             while (rs.next()){
@@ -42,40 +49,76 @@ public class TableVoucherStatus extends ParentDAO implements DAOI {
                 wrapVoucherStatus.append(voucherStatus);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
+    }
+
+    public static VoucherStatus selectID(int id) {
+        String sqlReq = "SELECT * FROM voucher_status WHERE idvoucher_status="+id;
+        VoucherStatus voucherStatus = new VoucherStatus();
+        try {
+            Statement statement =
+                    MysqlConnect.getDbCon().createStatement();
+
+            ResultSet rs = statement.executeQuery(sqlReq);
+
+            while (rs.next()){
+                voucherStatus.setIdvoucher_status(rs.getInt("idvoucher_status"));
+                voucherStatus.setStatus(rs.getString("status"));
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return voucherStatus;
 
     }
 
     @Override
-    public void insertAllRowDB() {
+    public synchronized void insertAllRowDB(Counter counter) {
 
         String sqlReq = "INSERT INTO voucher_status "
                 + "(idvoucher_status, status) VALUES"
                 + "(?,?)";
         try {
             for(VoucherStatus voucherStatus: wrapVoucherStatus.getListVoucherStatus()) {
+
                 PreparedStatement prepStat =
                         MysqlConnect.getDbCon().prepareStatement(sqlReq);
                 prepStat.setInt(1, voucherStatus.getIdvoucher_status());
                 prepStat.setString(2, voucherStatus.getStatus());
-                prepStat.executeUpdate();
+
+                    logger.trace("Добавление " + voucherStatus.getStatus());
+
+                    prepStat.executeUpdate();
+                    counter.append(voucherStatus);
+
+                    logger.trace("Добавление " + voucherStatus.getStatus());
+
+
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
 
 
     }
 
     @Override
-    public void saveXML() throws JAXBException {
-        this.parser.saveObject(file, wrapVoucherStatus);
+    public void saveXML() {
+        try {
+            this.parser.saveObject(file, wrapVoucherStatus);
+        } catch (JAXBException e) {
+            logger.error(e.getMessage());
+        }
     }
 
     @Override
-    public void parseXML() throws JAXBException {
-        wrapVoucherStatus = (WrapVoucherStatus) parser.getObject(file, WrapVoucherStatus.class);
+    public void parseXML() {
+        try {
+            wrapVoucherStatus = (WrapVoucherStatus) parser.getObject(file, WrapVoucherStatus.class);
+        } catch (JAXBException e) {
+            logger.error(e.getMessage());
+        }
     }
 
 

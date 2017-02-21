@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by dmitrii on 20.02.17.
  */
-@XmlRootElement(name = "TravelVouchers")
+@XmlRootElement(name = "travelVouchers")
 public class WrapTravelVoucher implements WrapI<TravelVoucher> {
 
     private List<TravelVoucher> list = new ArrayList<TravelVoucher>();
@@ -20,7 +20,7 @@ public class WrapTravelVoucher implements WrapI<TravelVoucher> {
         return list;
     }
 
-    @XmlElement(name = "TravelVoucher")
+    @XmlElement(name = "travelVoucher")
     @Override
     public void setList(List<TravelVoucher> c) {
         this.list = c;
