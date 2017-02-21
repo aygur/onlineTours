@@ -33,12 +33,14 @@ public class TableTravelVoucher extends ParentDAO implements DAOI {
 
     @Override
     public void insertAllRowDB(Counter counter) {
+        logger.trace("Начало проверки travel_voucher " );
         String sqlReq = "INSERT INTO travel_voucher "
                 + "(idtravel_voucher, tour_id, client_id, status_id, " +
                 "payment_date, booking_date, payment_num) VALUES"
                 + "(?,?,?,?,?,?,?)";
         for(TravelVoucher travelVoucher: wrapTravelVoucher.getList()) {
             synchronized (counter) {
+                logger.trace("Вход в синхр. блок для " + TableTravelVoucher.class);
                 while (!counter.isExist(travelVoucher.getClient()) &&
                         !counter.isExist(travelVoucher.getTour()) &&
                         !counter.isExist(travelVoucher.getVoucherStatus())) {
@@ -47,17 +49,8 @@ public class TableTravelVoucher extends ParentDAO implements DAOI {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                    logger.trace("Выход из блока " + TableTravelVoucher.class);
                 }
-
-                logger.trace("Начало проверки ");
-
-
-                        logger.trace("Вход в синхр. блок для " + TableTravelVoucher.class);
-
-
-
-                logger.trace("Выход из блока " + TableTravelVoucher.class);
-
 
 
             try {
@@ -71,6 +64,7 @@ public class TableTravelVoucher extends ParentDAO implements DAOI {
                 prepStat.setDate(6, new Date(travelVoucher.getBooking_date().getTime()));
                 prepStat.setString(7, travelVoucher.getPayment_num());
                 prepStat.executeUpdate();
+                logger.trace("Ввод данных в базу " + TableTravelVoucher.class);
             } catch (SQLException e) {
                 logger.error(e);
             }

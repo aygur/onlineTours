@@ -109,7 +109,7 @@ public class TableClient extends ParentDAO implements DAOI{
                 counter.append(client);
 
                 counter.notifyAll();
-                logger.trace("Выход из добавлене " + client.getFirstName());
+                logger.trace("Выход из добавление " + client.getFirstName());
 
             } catch (SQLException e) {
                 logger.error(e.getMessage());

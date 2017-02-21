@@ -8,12 +8,12 @@ import java.util.HashSet;
 public class Counter {
     static HashSet<Object> hashSet = new HashSet<>();
 
-    public synchronized void append(Object o) {
+    public void append(Object o) {
         hashSet.add(o);
         System.out.println("----------->");
     }
 
-    public synchronized boolean isExist(Object o) {
+    public boolean isExist(Object o) {
         System.out.println("===========>");
         return hashSet.contains(o);
     }

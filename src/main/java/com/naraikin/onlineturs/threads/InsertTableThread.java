@@ -10,11 +10,11 @@ import javax.xml.bind.JAXBException;
 public class InsertTableThread extends Thread {
 
     private DAOI daoi;
-   final private Counter counter;
+    private Counter counter;
 
-    public InsertTableThread(DAOI daoi, Counter counter){
+    public InsertTableThread(DAOI daoi, Counter cnt){
         this.daoi = daoi;
-        this.counter = counter;
+        this.counter = cnt;
     }
     @Override
     public void run() {

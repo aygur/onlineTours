@@ -88,11 +88,12 @@ public class TableVoucherStatus extends ParentDAO implements DAOI {
                 prepStat.setString(2, voucherStatus.getStatus());
 
                     logger.trace("Добавление " + voucherStatus.getStatus());
-
-                    prepStat.executeUpdate();
-                    counter.append(voucherStatus);
-
-                    logger.trace("Добавление " + voucherStatus.getStatus());
+                    synchronized (counter){
+                        counter.append(voucherStatus);
+                        prepStat.executeUpdate();
+                        counter.notifyAll();
+                    }
+                    logger.trace("Добавлен " + voucherStatus.getStatus());
 
 
             }

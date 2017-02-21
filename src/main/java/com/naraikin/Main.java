@@ -49,10 +49,15 @@ public class Main {
         List<Thread> threads = new ArrayList<>();
         for (DAOI daoi: list){
             Thread t = new InsertTableThread(daoi, counter);
+            t.start();
             threads.add(t);
         }
         for (Thread t : threads){
-            t.start();
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
 

@@ -31,7 +31,7 @@ public final class MysqlConnect {
      *
      * @return MysqlConnect Database connection object
      */
-    public static  Connection getDbCon() {
+    public static synchronized Connection getDbCon() {
         if ( db == null ) {
             db = new MysqlConnect();
         }
