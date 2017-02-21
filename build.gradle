@@ -1,0 +1,16 @@
+group 'com.naraikin.onlineturs'
+version '1.0.1'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //testCompile group: 'junit', name: 'junit', version: '5.17'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+
+}
