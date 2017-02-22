@@ -33,44 +33,47 @@ public class TableTravelVoucher extends ParentDAO implements DAOI {
 
     @Override
     public void insertAllRowDB(Counter counter) {
-        logger.trace("Начало проверки travel_voucher " );
+        logger.trace("Ввод дынных в БД из XML для travel_voucher ");
         String sqlReq = "INSERT INTO travel_voucher "
                 + "(idtravel_voucher, tour_id, client_id, status_id, " +
                 "payment_date, booking_date, payment_num) VALUES"
                 + "(?,?,?,?,?,?,?)";
-        for(TravelVoucher travelVoucher: wrapTravelVoucher.getList()) {
-            synchronized (counter) {
-                logger.trace("Вход в синхр. блок для " + TableTravelVoucher.class);
-                while (!counter.isExist(travelVoucher.getClient()) &&
-                        !counter.isExist(travelVoucher.getTour()) &&
+        PreparedStatement prepStat =
+                null;
+
+        for (TravelVoucher travelVoucher : wrapTravelVoucher.getList()) {
+
+            synchronized (counter){
+                logger.trace("Вход в синхр. блок для " + wrapTravelVoucher.getList().size());
+                while (!counter.isExist(travelVoucher.getClient()) ||
+                        !counter.isExist(travelVoucher.getTour()) ||
                         !counter.isExist(travelVoucher.getVoucherStatus())) {
-                    try {
-                        counter.wait();
-                } catch (InterruptedException e) {
+                        try {
+                            logger.trace("Ожидание внесения зависимых строк");
+                            counter.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                try {
+                    prepStat = MysqlConnect.getDbCon().prepareStatement(sqlReq);
+
+                    prepStat.setInt(1, travelVoucher.getIdtravel_voucher());
+                    prepStat.setInt(2, travelVoucher.getTour().getIdtur());
+                    prepStat.setInt(3, travelVoucher.getClient().getIdclient());
+                    prepStat.setInt(4, travelVoucher.getVoucherStatus().getIdvoucher_status());
+                    prepStat.setDate(5, new Date(travelVoucher.getPayment_date().getTime()));
+                    prepStat.setDate(6, new Date(travelVoucher.getBooking_date().getTime()));
+                    prepStat.setString(7, travelVoucher.getPayment_num());
+                    prepStat.executeUpdate();
+                    logger.trace("Данные успешно внесены для travel_voucher");
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                    logger.trace("Выход из блока " + TableTravelVoucher.class);
-                }
 
+            }
 
-            try {
-                PreparedStatement prepStat =
-                        MysqlConnect.getDbCon().prepareStatement(sqlReq);
-                prepStat.setInt(1, travelVoucher.getIdtravel_voucher());
-                prepStat.setInt(2, travelVoucher.getTour().getIdtur());
-                prepStat.setInt(3, travelVoucher.getClient().getIdclient());
-                prepStat.setInt(4, travelVoucher.getVoucherStatus().getIdvoucher_status());
-                prepStat.setDate(5, new Date(travelVoucher.getPayment_date().getTime()));
-                prepStat.setDate(6, new Date(travelVoucher.getBooking_date().getTime()));
-                prepStat.setString(7, travelVoucher.getPayment_num());
-                prepStat.executeUpdate();
-                logger.trace("Ввод данных в базу " + TableTravelVoucher.class);
-            } catch (SQLException e) {
-                logger.error(e);
-            }
-            }
         }
-
     }
 
     @Override
@@ -102,6 +105,7 @@ public class TableTravelVoucher extends ParentDAO implements DAOI {
     public void saveXML() {
         try {
             this.parser.saveObject(file, wrapTravelVoucher);
+            logger.trace("Данные сохранены в XML TableTravelVoucher");
         } catch (JAXBException e) {
             logger.error(e.getMessage());
         }
@@ -111,6 +115,7 @@ public class TableTravelVoucher extends ParentDAO implements DAOI {
     public void parseXML() {
         try {
             wrapTravelVoucher = (WrapTravelVoucher) parser.getObject(file, WrapTravelVoucher.class);
+            logger.trace("Данные получены из XML TableTravelVoucher");
         } catch (JAXBException e) {
             logger.error(e.getMessage());
         }

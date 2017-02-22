@@ -41,7 +41,7 @@ public class TableTour extends ParentDAO implements DAOI {
                 + "(?,?,?,?,?,?,?,?, ?)";
         for(Tour tour: wrapTours.getList()) {
             try {
-                synchronized (counter){
+
                 PreparedStatement prepStat =
                         MysqlConnect.getDbCon().prepareStatement(sqlReq);
                 prepStat.setInt(1, tour.getIdtur());
@@ -53,7 +53,9 @@ public class TableTour extends ParentDAO implements DAOI {
                 prepStat.setShort(7, tour.getBooking());
                 prepStat.setString(8, tour.getHotel());
                 prepStat.setString(9, tour.getCity());
-                logger.trace("Insert Table Tour"+ tour.getIdtur());
+
+                synchronized (counter){
+                    logger.trace("Insert Table Tour"+ tour.getIdtur());
                     prepStat.executeUpdate();
                     counter.append(tour);
                     counter.notifyAll();

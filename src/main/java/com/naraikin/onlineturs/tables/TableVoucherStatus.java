@@ -48,6 +48,7 @@ public class TableVoucherStatus extends ParentDAO implements DAOI {
                 voucherStatus.setStatus(rs.getString("status"));
                 wrapVoucherStatus.append(voucherStatus);
             }
+            logger.trace("Данные получены для TableVoucherStatus");
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
@@ -70,11 +71,10 @@ public class TableVoucherStatus extends ParentDAO implements DAOI {
             logger.error(e);
         }
         return voucherStatus;
-
     }
 
     @Override
-    public synchronized void insertAllRowDB(Counter counter) {
+    public void insertAllRowDB(Counter counter) {
 
         String sqlReq = "INSERT INTO voucher_status "
                 + "(idvoucher_status, status) VALUES"
@@ -87,15 +87,14 @@ public class TableVoucherStatus extends ParentDAO implements DAOI {
                 prepStat.setInt(1, voucherStatus.getIdvoucher_status());
                 prepStat.setString(2, voucherStatus.getStatus());
 
-                    logger.trace("Добавление " + voucherStatus.getStatus());
-                    synchronized (counter){
-                        counter.append(voucherStatus);
-                        prepStat.executeUpdate();
-                        counter.notifyAll();
-                    }
-                    logger.trace("Добавлен " + voucherStatus.getStatus());
+                logger.trace("Добавление " + voucherStatus.getStatus());
+                synchronized (counter){
+                    prepStat.executeUpdate();
+                    counter.append(voucherStatus);
+                    counter.notifyAll();
+                }
 
-
+                logger.trace("Добавлен " + voucherStatus.getStatus());
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
@@ -108,6 +107,7 @@ public class TableVoucherStatus extends ParentDAO implements DAOI {
     public void saveXML() {
         try {
             this.parser.saveObject(file, wrapVoucherStatus);
+            logger.trace("Данные сохранены в XML TableVoucherStatus");
         } catch (JAXBException e) {
             logger.error(e.getMessage());
         }
@@ -117,6 +117,7 @@ public class TableVoucherStatus extends ParentDAO implements DAOI {
     public void parseXML() {
         try {
             wrapVoucherStatus = (WrapVoucherStatus) parser.getObject(file, WrapVoucherStatus.class);
+            logger.trace("Данные получены из XML TableVoucherStatus");
         } catch (JAXBException e) {
             logger.error(e.getMessage());
         }

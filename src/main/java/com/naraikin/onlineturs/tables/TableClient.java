@@ -90,7 +90,7 @@ public class TableClient extends ParentDAO implements DAOI{
                 "birthDate, address, gender, doc) VALUES"
                 + "(?,?,?,?,?,?,?,?)";
         for(Client client: wrapClients.getList()) {
-            synchronized (counter){
+
             try {
             PreparedStatement prepStat =
                     MysqlConnect.getDbCon().prepareStatement(sqlReq);
@@ -103,18 +103,15 @@ public class TableClient extends ParentDAO implements DAOI{
             prepStat.setString(7, client.getGender());
             prepStat.setString(8, client.getDoc());
 
-
-                logger.trace("Добавление " + client.getFirstName());
-                prepStat.executeUpdate();
-                counter.append(client);
-
-                counter.notifyAll();
+                    logger.trace("Добавление Client " + client.getFirstName());
+                    prepStat.executeUpdate();
+                    counter.append(client);
                 logger.trace("Выход из добавление " + client.getFirstName());
 
             } catch (SQLException e) {
                 logger.error(e.getMessage());
             }
-            }
+
 
         }
 

@@ -17,54 +17,44 @@ public class Main {
     }
     public static void main(String[] args) {
 
-
+        boolean read = false;
         List<DAOI> list = new ArrayList<>();
         list.add(new TableTravelVoucher());
         list.add( new TableClient());
-       list.add(new TableVoucherStatus());
+        list.add(new TableVoucherStatus());
         list.add( new TableTour());
 
-/*
-       for (DAOI daoi: list){
-           try {
-               new SelectTableToXMLThread(daoi).join();
-           } catch (InterruptedException e) {
-               e.printStackTrace();
+
+
+        if(read){
+           for (DAOI daoi: list){
+               try {
+                   new SelectTableToXMLThread(daoi).join();
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
            }
-       }*/
+        } else {
+            /**
+             * Очистка таблицы и
+             */
+            for(DAOI daoi: list){
+                daoi.deleteTableData();
+                daoi.resetAUTO_INCREMENT();
+            }
 
-        /**
-         * Очистка таблицы и
-         */
-        for(DAOI daoi: list){
-           daoi.deleteTableData();
-           daoi.resetAUTO_INCREMENT();
-       }
+           Counter counter = new Counter();
 
-         Counter counter = new Counter();
-
-        /**
-         * Загрузка в базу данных из XML
-         */
-        List<Thread> threads = new ArrayList<>();
-        for (DAOI daoi: list){
-            Thread t = new InsertTableThread(daoi, counter);
-            t.start();
-            threads.add(t);
-        }
-        for (Thread t : threads){
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            /**
+             * Загрузка в базу данных из XML
+             */
+            List<Thread> threads = new ArrayList<>();
+            for (DAOI daoi: list){
+                Thread t = new InsertTableThread(daoi, counter);
+                t.start();
+                threads.add(t);
             }
         }
-
-
-
-
-
-
 
     }
 }
