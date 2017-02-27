@@ -1,46 +1,54 @@
 package models.connector;
 
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  * Created by dmitrii on 23.02.17.
  */
 public class Connector {
-    private static Connection conn;
-    private static  String user = "root";//Логин пользователя
-    private static String password = "mysql2017";//Пароль пользователя
-    private static String url = "jdbc:mysql://localhost:3306/mydb_tours";//URL адрес
-    private static String driver = "com.mysql.jdbc.Driver";//Имя драйвера
-    private static Connector db;
-    private static Properties p=new Properties();
-    static {
-        p.put("user",user);
-        p.put("password",password);
-        p.put("characterEncoding","UTF-8");
-    }
+    static private Logger logger = Logger.getLogger(Connector.class);
+    private static Connector datasource;
+    private static BasicDataSource ds;
 
-
-    public static synchronized Connection getDbCon() {
-        if ( db == null ) {
-            db = new Connector();
-        }
-        return db.conn;
-    }
 
     private Connector() {
-        try {
-            Class.forName(driver).newInstance();
-            this.conn = (Connection) DriverManager.getConnection(url, p);
-        }
-        catch (Exception sqle) {
-            sqle.printStackTrace();
-        }
+        ds = new BasicDataSource();
+        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setUsername("root");
+        ds.setPassword("mysql2017");
+        ds.setUrl("jdbc:mysql://localhost/mydb_tours?useUnicode=yes&characterEncoding=UTF-8");
+
+        // the settings below are optional -- dbcp can work with defaults
+        ds.setMinIdle(5);
+        ds.setMaxIdle(20);
+        ds.setMaxOpenPreparedStatements(180);
 
     }
+    public static Connector getInstance() {
+        if (datasource == null) {
+                datasource = new Connector();
+            return datasource;
+        } else {
+            return datasource;
+        }
+    }
+
+    public static Connection getDbCon() {
+        if (datasource == null)
+            logger.trace("Новое подключение");
+            datasource = new Connector();
+        try {
+            logger.trace("Возращаем подлючение");
+            return ds.getConnection();
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return null;
+    }
+
 }

@@ -102,7 +102,7 @@ public class ClientDAO {
                 client.setGender(resultSet.getString("gender"));
                 client.setLogin(resultSet.getString("login"));
                 client.setPassword(resultSet.getString("password"));
-                client.setPhone(resultSet.getString("email"));
+                client.setEmail(resultSet.getString("email"));
                 client.setRole(resultSet.getString("role"));
                 client.setBlocked(resultSet.getByte("blocked"));
             }
@@ -184,7 +184,7 @@ public class ClientDAO {
                 client.setGender(resultSet.getString("gender"));
                 client.setLogin(resultSet.getString("login"));
                 client.setPassword(resultSet.getString("password"));
-                client.setPhone(resultSet.getString("email"));
+                client.setEmail(resultSet.getString("email"));
                 client.setRole(resultSet.getString("role"));
                 client.setBlocked(resultSet.getByte("blocked"));
             }

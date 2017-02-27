@@ -23,6 +23,11 @@ dependencies {
     compile group: 'org.webjars', name: 'jquery', version: '3.1.1-1'
     // https://mvnrepository.com/artifact/org.webjars/webjars-locator
     compile group: 'org.webjars', name: 'webjars-locator', version: '0.32'
+// https://mvnrepository.com/artifact/javax.mail/mail
+    compile group: 'javax.mail', name: 'mail', version: '1.4'
+    // https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp
+    compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+
 
 
 
