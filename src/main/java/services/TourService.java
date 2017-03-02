@@ -26,8 +26,8 @@ public class TourService {
         TourDAO.create(tour);
     }
 
-    public static void deleteTour(Tour tour) throws ClientDAOException {
-        TourDAO.delete(tour);
+    public static void setDeleteTour(Tour tour) throws ClientDAOException {
+        TourDAO.setDelete(tour);
     }
 
 }

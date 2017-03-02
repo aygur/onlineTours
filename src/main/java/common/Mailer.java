@@ -42,7 +42,7 @@ public class Mailer {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(user));
 
-            message.setSubject("Notification from onlineTours!");
+            message.setSubject("Notification OnlineTours!");
             message.setText(text);
 
             Transport.send(message);

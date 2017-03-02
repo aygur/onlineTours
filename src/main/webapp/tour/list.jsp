@@ -34,8 +34,8 @@
                 <td>${tourItem.city}</td>
                 <td>${tourItem.booking}</td>
 
-                <td><a href="/students/edit?id=${userItem.id}">Edit</a>
-                <a href="/students/delete?id=${userItem.id}">Delete</a></td>
+                <td><a href="/tour/edit?id=${tourItem.idtur}">Edit</a>
+                <a href="/tour/delete?id=${tourItem.idtur}">Delete</a></td>
 
             </tr>
         </c:forEach>

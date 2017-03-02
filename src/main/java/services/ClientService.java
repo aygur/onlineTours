@@ -1,6 +1,7 @@
 package services;
 
 import common.ClientDAOException;
+import common.ClientServiceException;
 import models.dao.ClientDAO;
 import models.pojo.Client;
 import org.apache.log4j.Logger;
@@ -13,28 +14,67 @@ import java.util.List;
 public class ClientService {
     static Logger logger = Logger.getLogger(ClientService.class);
 
-    public static Client authorize(String login, String password) throws ClientDAOException {
-        return ClientDAO.getClientByLoginAndPassword(login, password);
+    public static Client authorize(String login, String password) throws ClientServiceException {
+        try {
+            return ClientDAO.getClientByLoginAndPassword(login, password);
+        } catch (ClientDAOException e) {
+            logger.error(e);
+            throw new ClientServiceException();
+        }
     }
 
-    public static boolean registration(String login, String password, String email) throws ClientDAOException  {
-        return ClientDAO.registrationClient(login, password, email);
+    public static boolean registration(Client client) throws ClientServiceException {
+        try {
+            return ClientDAO.registrationClient(client);
+        } catch (ClientDAOException e) {
+            logger.error(e);
+            throw new ClientServiceException();
+        }
     }
 
-    public static boolean update(Client client) throws ClientDAOException {
-        return ClientDAO.updateClient(client);
+    public static boolean registration(String login, String password, String email) throws ClientServiceException {
+        try {
+            return ClientDAO.registrationClient(login, password, email);
+        } catch (ClientDAOException e) {
+            logger.error(e);
+            throw new ClientServiceException();
+        }
     }
 
-    public static Client getClientById(int id) throws ClientDAOException {
-        return ClientDAO.getClientById(id);
+    public static boolean update(Client client) throws ClientServiceException {
+        try {
+            return ClientDAO.updateClient(client);
+        } catch (ClientDAOException e) {
+            logger.error(e);
+            throw new ClientServiceException();
+        }
     }
 
-    public static List<Client> getAllClient() throws ClientDAOException {
-        return ClientDAO.getAll();
+    public static Client getClientById(int id) throws ClientServiceException {
+        try {
+            return ClientDAO.getClientById(id);
+        } catch (ClientDAOException e) {
+            logger.error(e);
+            throw new ClientServiceException();
+        }
     }
 
-    public static boolean setClientBlocked(int id) throws ClientDAOException {
-        return ClientDAO.setClientBlocked(id);
+    public static List<Client> getAllClient() throws ClientServiceException {
+        try {
+            return ClientDAO.getAll();
+        } catch (ClientDAOException e) {
+            logger.error(e);
+            throw new ClientServiceException();
+        }
+    }
+
+    public static boolean setClientBlocked(int id) throws ClientServiceException {
+        try {
+            return ClientDAO.setClientBlocked(id);
+        } catch (ClientDAOException e) {
+            logger.error(e);
+            throw new ClientServiceException();
+        }
     }
 
 }

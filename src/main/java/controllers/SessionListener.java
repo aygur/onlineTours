@@ -1,6 +1,7 @@
 package controllers;
 
 import common.ClientDAOException;
+import common.ClientServiceException;
 import common.Mailer;
 import models.pojo.Client;
 import org.apache.log4j.Logger;
@@ -37,7 +38,7 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
                     logger.trace(client.getEmail());
                     Mailer.sendEmail(client.getEmail(), "You login to OnlineTuors as 'admin' role");
                 }
-            } catch (ClientDAOException e) {
+            } catch (ClientServiceException e) {
                 logger.trace(e);
             }
         }

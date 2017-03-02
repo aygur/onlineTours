@@ -1,6 +1,7 @@
 package controllers.client;
 
 import common.ClientDAOException;
+import common.ClientServiceException;
 import models.dao.ClientDAO;
 import models.pojo.Client;
 import org.apache.log4j.Logger;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 
@@ -23,12 +25,20 @@ public class EditClientServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = Integer.parseInt(req.getParameter("id"));
+
+        Client client = null;
         try {
-            Client client = ClientService.getClientById(id);
+            if(req.getParameter("id") != null){
+                Integer id = Integer.parseInt(req.getParameter("id"));
+                client = ClientService.getClientById(id);
+            } else {
+                HttpSession session = req.getSession();
+                client = ClientService.getClientById((Integer) session.getAttribute("id"));
+            }
+
             req.setAttribute("client", client);
             req.getRequestDispatcher("/client/edit.jsp").forward(req, resp);
-        } catch (ClientDAOException e) {
+        } catch (ClientServiceException e) {
             logger.error(e);
             resp.sendRedirect("/error");
         }
@@ -44,7 +54,6 @@ public class EditClientServlet extends HttpServlet {
         client.setFirstName(req.getParameter("firstName"));
         client.setPhone(req.getParameter("phone"));
         client.setDoc(req.getParameter("doc"));
-        System.out.println(req.getParameter("birthDate"));
         client.setBirthDate(Date.valueOf(req.getParameter("birthDate")));
         client.setAddress(req.getParameter("address"));
         client.setGender(req.getParameter("gender"));
@@ -56,7 +65,7 @@ public class EditClientServlet extends HttpServlet {
         try {
             ClientService.update(client);
             resp.sendRedirect("/client");
-        } catch (ClientDAOException e) {
+        } catch (ClientServiceException e) {
             logger.error(e);
             resp.sendRedirect("/error");
         }

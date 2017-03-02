@@ -28,6 +28,10 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp
     compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
 
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-web', version: '4.3.4.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.4.RELEASE'
+
 
 
 

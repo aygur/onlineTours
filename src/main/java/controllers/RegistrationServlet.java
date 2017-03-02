@@ -1,6 +1,8 @@
 package controllers;
 
 import common.ClientDAOException;
+import common.ClientServiceException;
+import models.pojo.Client;
 import org.apache.log4j.Logger;
 import services.ClientService;
 
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 
 /**
  * Created by dmitrii on 23.02.17.
@@ -25,19 +28,32 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.trace("on post");
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
-        String email = req.getParameter("email");
+        req.setCharacterEncoding("UTF-8");
+        Client client = new Client(0,
+                req.getParameter("lastName"),
+                req.getParameter("firstName"),
+                req.getParameter("phone"),
+                Date.valueOf(req.getParameter("birthDate")),
+                req.getParameter("doc"),
+                req.getParameter("address"),
+                req.getParameter("gender"),
+                req.getParameter("login"),
+                req.getParameter("password"),
+                req.getParameter("email"),
+                "user",
+                (short) 0);
+
         try {
-            if(ClientService.registration(login, password, email)){
-                logger.trace("registration");
-                resp.sendRedirect("/login");
+            if(ClientService.registration(client)) {
+                logger.trace("registration ok");
+                req.setAttribute("error", "Регистрация успешна! Войдите в систему");
+                req.getRequestDispatcher("client/login.jsp").forward(req, resp);
             }else{
                 logger.trace("not registration");
                 req.setAttribute("error", "Допущена ошибка при вводе данных");
                 req.getRequestDispatcher("client/registration.jsp").forward(req, resp);
             }
-        } catch (ClientDAOException e) {
+        } catch (ClientServiceException e) {
             logger.error(e);
             resp.sendRedirect("/error");
         }

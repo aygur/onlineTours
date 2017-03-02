@@ -25,18 +25,50 @@ public class ClientDAO {
     private static final String SQL_CREATE_CLIENT_REGISTRATION =
             "INSERT INTO client (login, password, email, role) " +
                     "VALUES(?, ?, ?, ?)";
+    private static final String SQL_CREATE_CLIENT_REGISTRATION_ALL =
+            "INSERT INTO client (lastName, firstName, phone, doc, birthDate, address," +
+                    " gender,login, password, email, role) " +
+                    "VALUES(?, ?, ?, ?, ? , ? ,? , ? ,?,?, ? )";
     private static final String SQL_UPDATE_CLIENT = "UPDATE client SET lastName= ?, " +
             " firstName = ?, phone = ?, doc =?, birthDate =? , address= ?, " +
             " gender = ? " +
             " WHERE idclient = ?";
 
+    public static boolean registrationClient(Client client) throws ClientDAOException {
+        Connection connection = Connector.getDbCon();
+        try(PreparedStatement ps
+                    = connection.prepareStatement(SQL_CREATE_CLIENT_REGISTRATION_ALL)) {
+
+            ps.setString(1, client.getLastName());
+            ps.setString(2, client.getFirstName());
+            ps.setString(3, client.getPhone());
+            ps.setString(4, client.getDoc());
+            ps.setDate(5, client.getBirthDate());
+            ps.setString(6, client.getAddress());
+            ps.setString(7, client.getGender());
+            ps.setString(8, client.getLogin());
+            ps.setString(9, client.getPassword());
+            ps.setString(10, client.getEmail());
+            ps.setString(11, client.getRole());
+            int count = ps.executeUpdate();
+            if(count > 0){
+                logger.debug("update client " + count);
+                return true;
+            }else{
+                logger.debug(client.getLogin() + " not updated");
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new ClientDAOException();
+        }
+        return false;
+    }
 
     public static List<Client> getAll() throws ClientDAOException {
         List<Client> list = new ArrayList<>();
-        try {
-            Statement statement = Connector.getDbCon().createStatement();
+        try {Statement statement = Connector.getDbCon().createStatement();
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL);
-
+            logger.trace(Connector.ds.getNumActive());
             while (resultSet.next()){
                 Client client = new Client();
                 client.setIdclient(resultSet.getInt("idclient"));
@@ -49,7 +81,7 @@ public class ClientDAO {
                 client.setGender(resultSet.getString("gender"));
                 client.setLogin(resultSet.getString("login"));
                 client.setPassword(resultSet.getString("password"));
-                client.setPhone(resultSet.getString("email"));
+                client.setEmail(resultSet.getString("email"));
                 client.setRole(resultSet.getString("role"));
                 client.setBlocked(resultSet.getByte("blocked"));
                 list.add(client);
@@ -65,6 +97,7 @@ public class ClientDAO {
         Client client = new Client();
         Connection conn = Connector.getDbCon();
         try (PreparedStatement prepS = conn.prepareStatement(SQL_SET_DELETE)) {
+
             prepS.setInt(1, id);
 
                 int count = prepS.executeUpdate();
@@ -86,8 +119,7 @@ public class ClientDAO {
         Client client = new Client();
         logger.trace("Connection to DB");
         Connection conn = Connector.getDbCon();
-        try (
-             PreparedStatement prepS = conn.prepareStatement(SQL_FIND_CLIENT)) {
+        try (PreparedStatement prepS = conn.prepareStatement(SQL_FIND_CLIENT)) {
             prepS.setString(1, login);
             prepS.setString(2, password);
             ResultSet resultSet = prepS.executeQuery();

@@ -1,6 +1,7 @@
 package controllers.client;
 
 import common.ClientDAOException;
+import common.ClientServiceException;
 import models.pojo.Client;
 import org.apache.log4j.Logger;
 import services.ClientService;
@@ -29,7 +30,7 @@ public class ShowAllClientServlet extends HttpServlet {
             List<Client> clients = ClientService.getAllClient();
             req.setAttribute("clients", clients);
             req.getRequestDispatcher("/client/list.jsp").forward(req, resp);
-        } catch (ClientDAOException e) {
+        } catch (ClientServiceException e) {
             logger.error(e);
             resp.sendRedirect("/error");
         }

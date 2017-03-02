@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class Connector {
     static private Logger logger = Logger.getLogger(Connector.class);
     private static Connector datasource;
-    private static BasicDataSource ds;
+    public static BasicDataSource ds;
 
 
     private Connector() {
@@ -42,8 +42,10 @@ public class Connector {
         if (datasource == null)
             logger.trace("Новое подключение");
             datasource = new Connector();
+
         try {
             logger.trace("Возращаем подлючение");
+            logger.trace(ds.getNumActive());
             return ds.getConnection();
         } catch (SQLException e) {
             logger.error(e);

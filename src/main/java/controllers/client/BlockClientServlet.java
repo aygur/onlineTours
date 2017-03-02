@@ -1,6 +1,7 @@
 package controllers.client;
 
 import common.ClientDAOException;
+import common.ClientServiceException;
 import models.dao.ClientDAO;
 import models.pojo.Client;
 import org.apache.log4j.Logger;
@@ -31,7 +32,7 @@ public class BlockClientServlet extends HttpServlet {
             ClientService.setClientBlocked(Integer.parseInt(req.getParameter("id")));
             logger.trace("blocked" + Integer.parseInt(req.getParameter("id")));
             resp.sendRedirect("/client");
-        } catch (ClientDAOException e) {
+        } catch (ClientServiceException e) {
             logger.error(e);
             resp.sendRedirect("/error");
         }

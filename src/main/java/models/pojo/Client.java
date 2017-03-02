@@ -10,7 +10,7 @@ import java.util.Date;
 
 @XmlType(propOrder = {"idclient","lastName", "firstName",
         "phone", "birthDate", "address", "gender",
-        "doc"}, name = "client")
+        "doc", "login", "password", "email", "role", "blocked"}, name = "client")
 @XmlRootElement
 public class Client {
     private int idclient;
@@ -26,6 +26,30 @@ public class Client {
     private String email;
     private String role;
     private short blocked;
+
+    public Client() {
+    }
+
+    public Client(int idclient, String lastName,
+                  String firstName, String phone,
+                  java.sql.Date birthDate, String doc,
+                  String address, String gender, String login,
+                  String password, String email, String role,
+                  short blocked) {
+        this.idclient = idclient;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.doc = doc;
+        this.address = address;
+        this.gender = gender;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.blocked = blocked;
+    }
 
     public short getBlocked() {
         return blocked;
@@ -88,9 +112,6 @@ public class Client {
 
     public void setDoc(String doc) {
         this.doc = doc;
-    }
-
-    public Client() {
     }
 
     public String getLastName() {

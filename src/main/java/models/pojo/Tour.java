@@ -10,7 +10,7 @@ import java.util.Date;
 
 @XmlType(propOrder = {"idtur","dateStart", "dateFinish",
         "tur_type", "menu_type", "cost", "booking", "hotel",
-        "city"})
+        "city", "deleted"})
 @XmlRootElement
 public class Tour {
     private int idtur;
@@ -22,6 +22,16 @@ public class Tour {
     private short booking;
     private String hotel;
     private String city;
+    private short deleted;
+
+
+    public short getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(short deleted) {
+        this.deleted = deleted;
+    }
 
     public int getIdtur() {
         return idtur;

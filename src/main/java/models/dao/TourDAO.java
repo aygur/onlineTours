@@ -20,7 +20,7 @@ public class TourDAO {
     private static Logger logger = Logger.getLogger(TourDAO.class);
     private static final String SQL_SELECT_ALL = "SELECT * FROM tour";
     //    public Connection connection;
-    private static final String SQL_DELETE_TOUR = "delete from tour " +
+    private static final String SQL_DELETE_TOUR = "UPDATE from tour SET deleted=1 " +
             "where id = ?";
     private static final String SQL_UPDATE_TOUR = "UPDATE tour SET  dateStart= ?, dateFinish = ?, " +
             " tup_type = ?, menu_type =?, cost =? , booking= ?, " +
@@ -55,7 +55,7 @@ public class TourDAO {
         return tour;
     }
 
-    public static void delete(Tour tour) throws ClientDAOException {
+    public static void setDelete(Tour tour) throws ClientDAOException {
 
         try( PreparedStatement ps = Connector.getDbCon().prepareStatement(
                 SQL_DELETE_TOUR)) {
@@ -116,6 +116,7 @@ public class TourDAO {
                 tour.setHotel(rs.getString("hotel"));
                 tour.setCity(rs.getString("city"));
                 tour.setBooking(rs.getByte("booking"));
+                tour.setDeleted(rs.getByte("deleted"));
                 list.add(tour);
             }
         } catch (SQLException e) {
@@ -129,7 +130,7 @@ public class TourDAO {
         Tour tour = new Tour();
         try {
             Statement statement = Connector.getDbCon().createStatement();
-            ResultSet rs = statement.executeQuery(SQL_SELECT_ALL+" WHERE id="+id);
+            ResultSet rs = statement.executeQuery(SQL_SELECT_ALL+" WHERE idtur="+id);
 
             while (rs.next()){
                 tour.setIdtur(rs.getInt("idtur"));
@@ -140,6 +141,7 @@ public class TourDAO {
                 tour.setCost(rs.getDouble("cost"));
                 tour.setHotel(rs.getString("hotel"));
                 tour.setCity(rs.getString("city"));
+                tour.setDeleted(rs.getByte("deleted"));
             }
         } catch (SQLException e) {
             logger.error(e);

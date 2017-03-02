@@ -31,7 +31,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="">Welcome ${sessionScope.get("login")}</a></li>
+                <li><a href="/LKClient">Welcome ${sessionScope.get("login")}</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -39,6 +39,3 @@
 </nav>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
