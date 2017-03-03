@@ -13,46 +13,43 @@
 <%@ include file="../template/body-head.jsp" %>
 
 
-<form action="/tour/edit" method="post">
-    <c:set var="tour" value="${tour}" />
+<form action="/tour/add" method="post">
     <div class="form-group">
         <label for="dateStart">Date Start:</label>
-        <input type="date" class="form-control" name="dateStart" id="dateStart" value="${tour.dateStart}" placeholder="Date Start">
+        <input type="date" class="form-control" name="dateStart" id="dateStart" value="" placeholder="Date Start">
     </div>
     <div class="form-group">
         <label for="dateFinish">Date Finish:</label>
-        <input type="text" class="form-control" name="dateFinish" id="dateFinish" value="${tour.dateFinish}" placeholder="Date Finish">
+        <input type="date" class="form-control" name="dateFinish" id="dateFinish" value="" placeholder="Date Finish">
     </div>
     <div class="form-group">
         <label for="tur_type">Tour type:</label>
-        <input type="text" class="form-control" name="tur_type" id="tur_type" value="${tour.tur_type}"  placeholder="Tour type">
+        <input type="text" class="form-control" name="tur_type" id="tur_type" value=""  placeholder="Tour type">
     </div>
     <div class="form-group">
         <label for="menu_type">Menu type:</label>
-        <input type="text" class="form-control" name="menu_type" id="menu_type" value="${tour.menu_type}"  placeholder="Menu type">
+        <input type="text" class="form-control" name="menu_type" id="menu_type" value=""  placeholder="Menu type">
     </div>
     <div class="form-group">
         <label for="cost">Cost:</label>
-        <input type="text" class="form-control" name="cost" id="cost" value="${tour.cost}"  placeholder="Cost">
+        <input type="text" class="form-control" name="cost" id="cost" value=""  placeholder="Cost">
     </div>
     <div class="form-group">
         <label for="booking">Booking:</label>
-        <input type="text" class="form-control" name="booking" id="booking" value="${tour.booking}"  placeholder="Booking">
+        <input type="text" class="form-control" name="booking" id="booking" value=""  placeholder="Booking">
     </div>
     <div class="form-group">
         <label for="hotel">Hotel:</label>
-        <input type="text" class="form-control" name="hotel" id="hotel" value="${tour.hotel}"  placeholder="Hotel">
+        <input type="text" class="form-control" name="hotel" id="hotel" value=""  placeholder="Hotel">
     </div>
     <div class="form-group">
         <label for="city">City:</label>
-        <input type="text" class="form-control" name="city" id="city" value="${tour.city}"  placeholder="City">
+        <input type="text" class="form-control" name="city" id="city" value=""  placeholder="City">
     </div>
     <div class="form-group">
         <label for="deleted">Deleted:</label>
-        <input type="text" class="form-control" name="deleted" id="deleted" value="${tour.deleted}"  placeholder="deleted">
+        <input type="text" class="form-control" name="deleted" id="deleted" value=""  placeholder="deleted">
     </div>
-
-    <input type="hidden" name="idtur" id="idtur" value="${tour.idtur}" >
     <input type="submit" value="Submit">
 </form>
 
