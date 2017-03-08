@@ -13,6 +13,7 @@
 <%@ include file="../template/body-head.jsp" %>
 
 <!-- Main component for a primary marketing message or call to action -->
+<h3>Список клиентов</h3>
 <table class="table table-hover">
     <thead>
     <td>Last name</td>
@@ -48,7 +49,8 @@
 
                 <form action="/client/block" method="post">
                 <input type="hidden" name="id" id="id" value="${client.idclient}" >
-                <input type="submit" value="Blocked">
+                <input type="hidden" name="block" id="block" value="${client.blocked}" >
+                <input type="submit" value="Block">
                 </form>
             </td>
 

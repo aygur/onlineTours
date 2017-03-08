@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.controllers.tour;
+package com.naraikin.onlinetours.controllers.servlets.tour;
 
 import com.naraikin.onlinetours.common.exception.TourServiceException;
 import com.naraikin.onlinetours.models.pojo.Tour;
@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Created by dmitrii on 03.03.17.
  */
-@WebServlet(name = "DeleteTourServlet", urlPatterns = "/tour/delete")
+//@WebServlet(name = "DeleteTourServlet", urlPatterns = "/tour/delete")
 public class DeleteTourServlet extends HttpServlet {
 
     private static Logger logger = Logger.getLogger(DeleteTourServlet.class);

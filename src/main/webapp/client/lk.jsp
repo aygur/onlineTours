@@ -14,7 +14,7 @@
 
 <c:set var="client" value="${client}" />
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
         <h3>About you</h3>
         <a href="/client/edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             Редактирование личных данных</a>
@@ -112,6 +112,45 @@
             </tbody>
         </table>
     </div>
+                <div class="col-lg-6">
+                    <h3>Список тур. путевок</h3>
+                    <table class="table table-hover">
+                        <thead>
+                        <td>№</td>
+                        <td>Путевка</td>
+
+                        <td>Дата начала</td>
+                        <td>Дата окончания</td>
+                        <td>Стоимость</td>
+                        <td>payment_date</td>
+                        <td>booking_date</td>
+                        <td>Номер оплаты</td>
+                        <td>Статус</td>
+                        <td>Покупатель</td>
+                        <td>Операции</td>
+                        </thead>
+                        <c:forEach items="${travelVouchers}" var="travelVoucher">
+                            <tr>
+                                <td>${travelVoucher.idtravel_voucher}</td>
+                                <td><a href="/tour/details?id=${travelVoucher.tour.idtur}">${travelVoucher.tour.idtur}</a></td>
+                                <td>${travelVoucher.tour.dateStart}</td>
+                                <td>${travelVoucher.tour.dateFinish}</td>
+                                <td>${travelVoucher.tour.cost}</td>
+                                <td>${travelVoucher.payment_date}</td>
+                                <td>${travelVoucher.booking_date}</td>
+                                <td>${travelVoucher.payment_num}</td>
+                                <td>${travelVoucher.voucherStatus.status}</td>
+                                <c:out value="${travelVoucher.client.idclient}" ></c:out>
+                                <td><% if (session.getAttribute("id")       ) { %>
+                                    <a href="/book_after?id=${travelVoucher.idtravel_voucher}">
+                                        Оплатить или Отменить тур</a>
+                                    <% } else {%>
+                                    <p> other content </p>
+                                    <% } %>
+
+                            </tr>
+                        </c:forEach>
+                    </table>
     </div>
 </div>
 

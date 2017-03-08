@@ -46,6 +46,7 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
                 logger.trace(e);
             }
         }
+
     }
 
     @Override

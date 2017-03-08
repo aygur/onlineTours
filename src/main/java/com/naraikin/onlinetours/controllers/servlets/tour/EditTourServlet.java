@@ -1,6 +1,5 @@
-package com.naraikin.onlinetours.controllers.tour;
+package com.naraikin.onlinetours.controllers.servlets.tour;
 
-import com.naraikin.onlinetours.common.exception.ClientDAOException;
 import com.naraikin.onlinetours.common.exception.TourServiceException;
 import com.naraikin.onlinetours.models.pojo.Tour;
 import com.naraikin.onlinetours.services.TourService;
@@ -20,7 +19,7 @@ import java.sql.Date;
 /**
  * Created by dmitrii on 28.02.17.
  */
-@WebServlet(name = "EditTourServlet", urlPatterns = "/tour/edit")
+//@WebServlet(name = "EditTourServlet", urlPatterns = "/tour/edit")
 public class EditTourServlet extends HttpServlet {
     private static Logger logger = Logger.getLogger(EditTourServlet.class);
 

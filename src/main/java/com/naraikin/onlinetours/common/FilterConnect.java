@@ -44,7 +44,7 @@ public class FilterConnect implements Filter {
             allowedRequest = true;
             logger.trace("authorized access request = " + url);
         } else {
-            if(url.contains("webjars") || url.contains("statics")){
+            if(url.contains("webjars") || url.contains("resources")){
                 logger.trace("All ok - static " + url);
                 chain.doFilter(request, response);
                 return;

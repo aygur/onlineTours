@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.controllers.client;
+package com.naraikin.onlinetours.controllers.servlets.client;
 
 import com.naraikin.onlinetours.common.exception.ClientServiceException;
 import com.naraikin.onlinetours.models.pojo.Client;
@@ -20,7 +20,7 @@ import java.sql.Date;
 /**
  * Created by dmitrii on 25.02.17.
  */
-@WebServlet(name = "EditClientServlet", urlPatterns = "/client/edit")
+//@WebServlet(name = "EditClientServlet", urlPatterns = "/client/edit")
 public class EditClientServlet extends HttpServlet {
     static Logger logger = Logger.getLogger(EditClientServlet.class);
 
@@ -35,10 +35,9 @@ public class EditClientServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         Client client = null;
         try {
-            if(req.getParameter("id") != null){
+            if(req.getParameter("id") != null) {
                 Integer id = Integer.parseInt(req.getParameter("id"));
                 client = clientService.getClientById(id);
             } else {
@@ -52,7 +51,6 @@ public class EditClientServlet extends HttpServlet {
             logger.error(e);
             resp.sendRedirect("/error");
         }
-
     }
 
     @Override

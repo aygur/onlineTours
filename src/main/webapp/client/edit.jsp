@@ -43,22 +43,22 @@
         <label for="gender">Gender:</label>
         <input type="text" class="form-control" name="gender" id="gender" value="${client.gender}"  placeholder="Gender">
     </div>
-    <div class="form-group">
-        <label for="login">Login:</label>
-        <input type="text" class="form-control" name="login" id="login" value="${client.login}"  placeholder="Login">
-    </div>
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="text" class="form-control" name="password" id="password" value="${client.password}"  placeholder="Password">
-    </div>
-    <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" name="email" id="email" value="${client.email}"  placeholder="Email">
-    </div>
-    <div class="form-group">
-        <label for="role">Role:</label>
-        <input type="text" class="form-control" name="role" id="role" value="${client.role}"  placeholder="role">
-    </div>
+    <%--<div class="form-group">--%>
+        <%--<label for="login">Login:</label>--%>
+        <%--<input type="text" class="form-control" name="login" id="login" value="${client.login}"  placeholder="Login">--%>
+    <%--</div>--%>
+    <%--<div class="form-group">--%>
+        <%--<label for="password">Password:</label>--%>
+        <%--<input type="text" class="form-control" name="password" id="password" value="${client.password}"  placeholder="Password">--%>
+    <%--</div>--%>
+    <%--<div class="form-group">--%>
+        <%--<label for="email">Email:</label>--%>
+        <%--<input type="email" class="form-control" name="email" id="email" value="${client.email}"  placeholder="Email">--%>
+    <%--</div>--%>
+    <%--<div class="form-group">--%>
+        <%--<label for="role">Role:</label>--%>
+        <%--<input type="text" class="form-control" name="role" id="role" value="${client.role}"  placeholder="role">--%>
+    <%--</div>--%>
 
 
     <input type="hidden" name="id" id="id" value="${client.idclient}" >

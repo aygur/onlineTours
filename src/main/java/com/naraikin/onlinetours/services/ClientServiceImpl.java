@@ -6,6 +6,7 @@ import com.naraikin.onlinetours.models.dao.ClientDAO;
 import com.naraikin.onlinetours.models.pojo.Client;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,12 +14,19 @@ import java.util.List;
 /**
  * Created by dmitrii on 23.02.17.
  */
-@Component
+@Component("ClientServiceImpl")
 public class ClientServiceImpl implements ClientService {
     static Logger logger = Logger.getLogger(ClientServiceImpl.class);
 
-    @Autowired
     private ClientDAO clientDAO;
+
+    @Autowired
+    @Qualifier("ClientDAOImpl")
+    public void setClientDAO(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
+    }
+
+
 
     public Client authorize(String login, String password) throws ClientServiceException {
         try {
@@ -74,9 +82,9 @@ public class ClientServiceImpl implements ClientService {
         }
     }
 
-    public boolean setClientBlocked(int id) throws ClientServiceException {
+    public boolean setClientBlocked(Client client) throws ClientServiceException {
         try {
-            return clientDAO.setClientBlocked(id);
+            return clientDAO.setClientBlocked(client);
         } catch (ClientDAOException e) {
             logger.error(e);
             throw new ClientServiceException();

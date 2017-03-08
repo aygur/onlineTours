@@ -11,6 +11,10 @@
 <%@ include file="../template/head.jsp" %>
 <%@ include file="../template/body-head.jsp" %>
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+
 <a href="/tour/add">Добавить Тур</a>
     <table class="table table-hover">
         <thead>
@@ -37,6 +41,8 @@
                 <td>${tourItem.booking}</td>
                 <td>${tourItem.deleted}</td>
                 <td><a href="/tour/edit?id=${tourItem.idtur}">Edit</a>
+                <td><a href="/tour/details?id=${tourItem.idtur}">Details</a>
+                <td><a href="/book_before?idtur=${tourItem.idtur}">Booking</a>
                 <form action="/tour/delete" method="post">
                     <input type="hidden" name="idtur" id="idtur" value="${tourItem.idtur}" >
                     <input type="hidden" name="deleted" id="deleted" value="${tourItem.deleted}" >
@@ -46,5 +52,11 @@
             </tr>
         </c:forEach>
     </table>
+
+
+        </div>
+    </div>
+
+</div>
 
 <%@ include file="../template/body-footer.html" %>

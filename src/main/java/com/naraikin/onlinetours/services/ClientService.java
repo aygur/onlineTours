@@ -21,5 +21,5 @@ public interface ClientService {
 
     public List<Client> getAllClient() throws ClientServiceException;
 
-    public boolean setClientBlocked(int id) throws ClientServiceException;
+    public boolean setClientBlocked(Client client) throws ClientServiceException;
 }

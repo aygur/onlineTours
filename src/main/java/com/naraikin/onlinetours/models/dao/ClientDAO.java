@@ -13,7 +13,7 @@ public interface ClientDAO {
 
     public List<Client> getAll() throws ClientDAOException;
 
-    public boolean setClientBlocked(int id) throws ClientDAOException;
+    public boolean setClientBlocked(Client client) throws ClientDAOException;
 
     public Client getClientByLoginAndPassword(String login, String password) throws ClientDAOException;
 
