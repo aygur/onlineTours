@@ -2,6 +2,7 @@ package com.naraikin.onlinetours.models.pojo;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -16,8 +17,25 @@ public class TravelVoucher {
     private Tour tour;
     private Client client;
     private VoucherStatus voucherStatus;
-    private Date payment_date;
-    private Date booking_date;
+    private Timestamp payment_date;
+    private Timestamp booking_date;
+
+    public Timestamp getPayment_date() {
+        return payment_date;
+    }
+
+    public void setPayment_date(Timestamp payment_date) {
+        this.payment_date = payment_date;
+    }
+
+    public Timestamp getBooking_date() {
+        return booking_date;
+    }
+
+    public void setBooking_date(Timestamp booking_date) {
+        this.booking_date = booking_date;
+    }
+
     private String payment_num;
 
     public Client getClient() {
@@ -50,22 +68,6 @@ public class TravelVoucher {
 
     public void setVoucherStatus(VoucherStatus voucherStatus) {
         this.voucherStatus = voucherStatus;
-    }
-
-    public Date getPayment_date() {
-        return payment_date;
-    }
-
-    public void setPayment_date(Date payment_date) {
-        this.payment_date = payment_date;
-    }
-
-    public Date getBooking_date() {
-        return booking_date;
-    }
-
-    public void setBooking_date(Date booking_date) {
-        this.booking_date = booking_date;
     }
 
     public String getPayment_num() {

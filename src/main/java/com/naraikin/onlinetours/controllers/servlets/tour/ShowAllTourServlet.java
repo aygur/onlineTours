@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.controllers.tour;
+package com.naraikin.onlinetours.controllers.servlets.tour;
 
 import com.naraikin.onlinetours.common.exception.TourServiceException;
 import com.naraikin.onlinetours.models.pojo.Tour;
@@ -14,14 +14,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Date;
+import java.util.List;
 
 /**
- * Created by dmitrii on 03.03.17.
+ * Created by dmitrii on 24.02.17.
  */
-@WebServlet(name = "AddTourServlet", urlPatterns = "/tour/add")
-public class AddTourServlet extends HttpServlet {
-    static Logger logger = Logger.getLogger(AddTourServlet.class);
+//@WebServlet(name = "ShowAllTuorServlet", urlPatterns = "/dashboard")
+public class ShowAllTourServlet extends HttpServlet {
+    static Logger logger = Logger.getLogger(ShowAllTourServlet.class);
 
     private TourService tourService;
 
@@ -38,28 +38,15 @@ public class AddTourServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/tour/add.jsp").forward(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        Tour tour = new Tour(
-                0,
-                Date.valueOf(req.getParameter("dateStart")),
-                Date.valueOf(req.getParameter("dateFinish")),
-                req.getParameter("tur_type"),
-                req.getParameter("menu_type"),
-                Double.parseDouble(req.getParameter("cost")),
-                (short) 0,
-                req.getParameter("hotel"),
-                req.getParameter("city"),
-                (short) 0);
+        List<Tour> tourList = null;
         try {
-            tourService.createTour(tour);
-            resp.sendRedirect("/dashboard");
+            tourList = tourService.getAllTour();
+            req.setAttribute("tourList", tourList);
+            logger.trace("Get list of tours");
+            getServletContext().getRequestDispatcher("/tour/list.jsp").forward(req, resp);
+
         } catch (TourServiceException e) {
-            logger.error(e);
+            logger.trace(e);
             resp.sendRedirect("/error");
         }
     }

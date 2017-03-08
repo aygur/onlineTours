@@ -14,6 +14,7 @@ public interface TourDAO {
     public Tour create(Tour tour) throws TourDAOException;
 
     public void setDelete(Tour tour) throws TourDAOException;
+    public void setBooking(Tour tour) throws TourDAOException;
 
     public void update(Tour tour) throws TourDAOException;
 

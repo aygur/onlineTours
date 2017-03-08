@@ -24,6 +24,8 @@ public class TourDAOImpl implements TourDAO {
     private static final String SQL_SELECT_ALL = "SELECT * FROM tour";
     private static final String SQL_DELETE_TOUR = "UPDATE tour SET deleted=? " +
             " WHERE idtur = ?";
+    private static final String SQL_BOOK_TOUR = "UPDATE tour SET booking=? " +
+            " WHERE idtur = ?";
     private static final String SQL_UPDATE_TOUR = "UPDATE tour SET  dateStart= ?, dateFinish = ?, " +
             " tur_type = ?, menu_type =?, cost =? , booking= ?, " +
             " hotel = ?, city=? " +
@@ -54,6 +56,20 @@ public class TourDAOImpl implements TourDAO {
         return tour;
     }
 
+    public void setBooking(Tour tour) throws TourDAOException {
+
+        try( PreparedStatement ps = Connector.getDbCon().prepareStatement(
+                SQL_BOOK_TOUR)) {
+            ps.setInt(1, tour.getBooking());
+            ps.setInt(2, tour.getIdtur());
+            ps.executeUpdate();
+        }
+        catch (SQLException se)
+        {
+            logger.error(se);
+            throw new TourDAOException();
+        }
+    }
     public void setDelete(Tour tour) throws TourDAOException {
 
         try( PreparedStatement ps = Connector.getDbCon().prepareStatement(
@@ -95,8 +111,7 @@ public class TourDAOImpl implements TourDAO {
 
     public List<Tour> getAll() throws TourDAOException {
         List<Tour> list = new ArrayList<>();
-        try {
-            Statement statement = Connector.getDbCon().createStatement();
+        try (Statement statement = Connector.getDbCon().createStatement()){
             ResultSet rs = statement.executeQuery(SQL_SELECT_ALL);
 
             while (rs.next()){

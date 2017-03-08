@@ -1,9 +1,11 @@
-package com.naraikin.onlinetours.controllers.client;
+package com.naraikin.onlinetours.controllers.servlets.client;
 
 import com.naraikin.onlinetours.common.exception.ClientServiceException;
+import com.naraikin.onlinetours.models.pojo.Client;
 import com.naraikin.onlinetours.services.ClientService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletConfig;
@@ -17,13 +19,14 @@ import java.io.IOException;
 /**
  * Created by dmitrii on 26.02.17.
  */
-@WebServlet(name = "BlockClientServlet", urlPatterns = "/client/block")
+//@WebServlet(name = "BlockClientServlet", urlPatterns = "/client/block")
 public class BlockClientServlet extends HttpServlet {
     static Logger logger = Logger.getLogger(BlockClientServlet.class);
 
 
 
     @Autowired
+    @Qualifier("ClientServiceImpl")
     private ClientService clientService;
 
     @Override
@@ -40,8 +43,18 @@ public class BlockClientServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            clientService.setClientBlocked(Integer.parseInt(req.getParameter("id")));
-            logger.trace("blocked" + Integer.parseInt(req.getParameter("id")));
+            Client client = new Client();
+            client.setIdclient(Integer.parseInt(req.getParameter("id")));
+            Short block = Short.parseShort(req.getParameter("block"));
+            if (block == 0){
+                block = 1;
+            }else {
+                block = 0;
+            }
+
+            client.setBlocked(block);
+            clientService.setClientBlocked(client);
+            logger.trace("block" + Integer.parseInt(req.getParameter("id")));
             resp.sendRedirect("/client");
         } catch (ClientServiceException e) {
             logger.error(e);

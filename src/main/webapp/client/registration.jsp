@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <jsp:include page="/template/head.jsp" ></jsp:include>
-<link href="${pageContext.request.contextPath}/statics/signin.css" rel="stylesheet">
+<link href="/resources/signin.css" rel="stylesheet">
 
 <body>
 <div class="container">
@@ -37,7 +37,10 @@
         <label for="address" class="sr-only">Address</label>
         <input type="text" id="address" name="address" value="" class="form-control" placeholder="Address" required>
         <label for="gender" class="sr-only">Gender</label>
-        <input type="text" id="gender" name="gender" value="" class="form-control" placeholder="Gender" required>
+        <select name="gender" id="gender" class="form-control">
+            <option value="m" selected>Man</option>
+            <option value="w">Woman</option>
+        </select>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>

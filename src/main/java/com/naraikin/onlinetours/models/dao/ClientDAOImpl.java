@@ -13,12 +13,12 @@ import java.util.List;
 /**
  * Created by dmitrii on 23.02.17.
  */
-@Repository
+@Repository("ClientDAOImpl")
 public class ClientDAOImpl implements ClientDAO {
     private static Logger logger = Logger.getLogger(ClientDAOImpl.class);
     private static final String SQL_SELECT_ALL = "SELECT * FROM client";
     private static final String SQL_SET_DELETE = "UPDATE client SET " +
-            " blocked = 1 " +
+            " blocked = ? " +
             " WHERE idclient = ?";
     private static final String SQL_FIND_CLIENT = "SELECT * FROM client where login=? AND password=?";
     private static final String SQL_SELECT_CLIENT_BY_ID = "SELECT * FROM client where idclient=?";
@@ -93,16 +93,16 @@ public class ClientDAOImpl implements ClientDAO {
         return list;
     }
 
-    public boolean setClientBlocked(int id) throws ClientDAOException {
-        Client client = new Client();
+    public boolean setClientBlocked(Client client) throws ClientDAOException {
         Connection conn = Connector.getDbCon();
         try (PreparedStatement prepS = conn.prepareStatement(SQL_SET_DELETE)) {
 
-            prepS.setInt(1, id);
+            prepS.setShort(1, client.getBlocked());
+            prepS.setInt(2, client.getIdclient());
 
                 int count = prepS.executeUpdate();
                 if(count > 0){
-                    logger.debug("blocked client " + count);
+                    logger.debug("block client " + count);
                     return true;
                 }else{
                     logger.debug(client.getLogin() + " not updated");
@@ -201,8 +201,7 @@ public class ClientDAOImpl implements ClientDAO {
         Client client = new Client();
         logger.trace("Connection to DB");
         Connection conn = Connector.getDbCon();
-        try (
-                PreparedStatement prepS = conn.prepareStatement(SQL_SELECT_CLIENT_BY_ID)) {
+        try (PreparedStatement prepS = conn.prepareStatement(SQL_SELECT_CLIENT_BY_ID)) {
             prepS.setInt(1, id);
             ResultSet resultSet = prepS.executeQuery();
             while (resultSet.next()){

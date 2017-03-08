@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.controllers;
+package com.naraikin.onlinetours.controllers.servlets;
 
 import com.naraikin.onlinetours.common.exception.ClientServiceException;
 import com.naraikin.onlinetours.models.pojo.Client;
@@ -19,7 +19,7 @@ import java.sql.Date;
 /**
  * Created by dmitrii on 23.02.17.
  */
-@WebServlet(name = "RegistrationServlet", urlPatterns = "/registration")
+//@WebServlet(name = "RegistrationServlet", urlPatterns = "/registration")
 public class RegistrationServlet extends HttpServlet {
     private static Logger logger = Logger.getLogger(RegistrationServlet.class);
 

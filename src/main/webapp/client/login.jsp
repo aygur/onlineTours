@@ -8,8 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <jsp:include page="/template/head.jsp" ></jsp:include>
-<link href="${pageContext.request.contextPath}/statics/signin.css" rel="stylesheet">
-
+<link href="/resources/signin.css" rel="stylesheet">
 
 <body>
 <div class="container">

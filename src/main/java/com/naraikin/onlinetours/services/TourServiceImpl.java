@@ -71,4 +71,12 @@ public class TourServiceImpl implements TourService {
         }
     }
 
+    public void setBooking(Tour tour) throws TourServiceException{
+        try {
+            tourDAO.setDelete(tour);
+        } catch (TourDAOException e) {
+            logger.error(e);
+            throw new TourServiceException();
+        }
+    }
 }

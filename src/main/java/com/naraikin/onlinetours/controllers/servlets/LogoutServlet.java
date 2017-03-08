@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.controllers;
+package com.naraikin.onlinetours.controllers.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by dmitrii on 25.02.17.
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = "/logout")
+//@WebServlet(name = "LogoutServlet", urlPatterns = "/logout")
 public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

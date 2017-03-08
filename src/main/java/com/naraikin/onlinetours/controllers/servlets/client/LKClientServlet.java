@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.controllers.client;
+package com.naraikin.onlinetours.controllers.servlets.client;
 
 import com.naraikin.onlinetours.common.exception.ClientServiceException;
 import com.naraikin.onlinetours.models.pojo.Client;
@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 /**
- * Created by dmitrii on 24.02.17.
+ * Created by dmitrii on 28.02.17.
  */
-@WebServlet(name = "ShowAllClientServlet", urlPatterns = "/client")
-public class ShowAllClientServlet extends HttpServlet {
-    static Logger logger = Logger.getLogger(ShowAllClientServlet.class);
+//@WebServlet(name = "LKClientServlet", urlPatterns = "/LKClient")
+public class LKClientServlet extends HttpServlet {
+    static Logger logger = Logger.getLogger(LKClientServlet.class);
+
 
     private ClientService clientService;
 
@@ -39,17 +39,14 @@ public class ShowAllClientServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.trace("GET");
         HttpSession session = req.getSession();
-        String userName = (String) session.getAttribute("login");
         try {
-            List<Client> clients = clientService.getAllClient();
-            req.setAttribute("clients", clients);
-            req.getRequestDispatcher("/client/list.jsp").forward(req, resp);
+            Client client = clientService.getClientById((Integer) session.getAttribute("id"));
+            req.setAttribute("client", client);
+            req.getRequestDispatcher("/client/lk.jsp").forward(req, resp);
         } catch (ClientServiceException e) {
             logger.error(e);
             resp.sendRedirect("/error");
         }
-
     }
 }
