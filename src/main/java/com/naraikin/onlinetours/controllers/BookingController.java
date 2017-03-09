@@ -7,10 +7,10 @@ import com.naraikin.onlinetours.models.pojo.Client;
 import com.naraikin.onlinetours.models.pojo.Tour;
 import com.naraikin.onlinetours.models.pojo.TravelVoucher;
 import com.naraikin.onlinetours.models.pojo.VoucherStatus;
-import com.naraikin.onlinetours.services.ClientService;
-import com.naraikin.onlinetours.services.TourService;
-import com.naraikin.onlinetours.services.TravelVoucherService;
-import com.naraikin.onlinetours.services.VoucherStatusService;
+import com.naraikin.onlinetours.services.interfaces.ClientService;
+import com.naraikin.onlinetours.services.interfaces.TourService;
+import com.naraikin.onlinetours.services.interfaces.TravelVoucherService;
+import com.naraikin.onlinetours.services.interfaces.VoucherStatusService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 /**
  * Created by dmitrii on 08.03.17.
@@ -31,6 +30,8 @@ import java.time.LocalDateTime;
 @Controller
 public class BookingController {
     static Logger logger = Logger.getLogger(BookingController.class);
+    private Integer sum;
+
 
     private TourService tourService;
     private ClientService clientService;
@@ -120,13 +121,47 @@ public class BookingController {
         }
     }
 
-
     @RequestMapping(value = "/bank", method = RequestMethod.GET)
-    public String bankGetPage(Model model, @RequestParam(name = "id") Integer id) {
+    public String bankGetPage(Model model, @RequestParam(name = "idtur") Integer id) {
         try {
             TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
+            Random random = new Random();
+            Integer oneS = random.nextInt(100);
+            Integer twoS = random.nextInt(50);
+            this.sum = oneS + twoS;
             model.addAttribute("travelVoucher", travelVoucher);
-            return "book/book_after";
+            model.addAttribute("one", oneS);
+            model.addAttribute("two", twoS);
+            return "book/book_bank";
+        } catch (TravelVoucherServiceException e) {
+            logger.error(e);
+            return "redirect:" + "/error";
+        }
+    }
+
+    @RequestMapping(value = "/bank", method = RequestMethod.POST)
+    public String bankPostPage(Model model, @RequestParam(name = "idtur") Integer id,
+                               @RequestParam(name = "sum_user")Integer sum_user) {
+        try {
+            TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
+            if(this.sum == sum_user){
+                travelVoucher.setPayment_date(Timestamp.valueOf(LocalDateTime.now()));
+                travelVoucher.setPayment_num(sum_user.toString()+Timestamp.valueOf(LocalDateTime.now()).getTime());
+                travelVoucherService.updateTravelVoucher(travelVoucher);
+                model.addAttribute("travelVoucher", travelVoucher);
+                return "book/book_finish";
+            } else{
+                Random random = new Random();
+                Integer oneS = random.nextInt(100);
+                Integer twoS = random.nextInt(50);
+                this.sum = oneS + twoS;
+                model.addAttribute("one", oneS);
+                model.addAttribute("two", twoS);
+                model.addAttribute("travelVoucher", travelVoucher);
+                model.addAttribute("error", "Оплата не прошла, повтор");
+                return "book/book_bank";
+            }
+
         } catch (TravelVoucherServiceException e) {
             logger.error(e);
             return "redirect:" + "/error";

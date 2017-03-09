@@ -1,10 +1,10 @@
 package com.naraikin.onlinetours.services;
 
-import com.naraikin.onlinetours.common.exception.ClientDAOException;
 import com.naraikin.onlinetours.common.exception.TourDAOException;
 import com.naraikin.onlinetours.common.exception.TourServiceException;
 import com.naraikin.onlinetours.models.dao.TourDAO;
 import com.naraikin.onlinetours.models.pojo.Tour;
+import com.naraikin.onlinetours.services.interfaces.TourService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

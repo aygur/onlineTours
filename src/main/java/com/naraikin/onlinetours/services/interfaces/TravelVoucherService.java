@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.services;
+package com.naraikin.onlinetours.services.interfaces;
 
 import com.naraikin.onlinetours.common.exception.TravelVoucherDAOException;
 import com.naraikin.onlinetours.common.exception.TravelVoucherServiceException;
@@ -16,5 +16,7 @@ public interface TravelVoucherService {
     TravelVoucher getTravelVoucherById(int id) throws TravelVoucherServiceException;
     Integer deleteTravelVoucher(TravelVoucher travelVoucher) throws TravelVoucherServiceException;
     List<TravelVoucher> getAllByClient(Client client)  throws TravelVoucherServiceException;
+    Integer updateTravelVoucher(TravelVoucher travelVoucher) throws TravelVoucherServiceException;
 
-}
+
+    }

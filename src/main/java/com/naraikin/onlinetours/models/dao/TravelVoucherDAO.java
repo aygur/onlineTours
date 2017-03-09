@@ -17,5 +17,6 @@ public interface TravelVoucherDAO {
     int createTravelVoucher(TravelVoucher travelVoucher) throws TravelVoucherDAOException;
     TravelVoucher getTravelVoucherById(int id) throws TravelVoucherDAOException;
     Integer deleteTravelVoucher(TravelVoucher travelVoucher) throws TravelVoucherDAOException;
+    Integer updateTravelVoucher(TravelVoucher travelVoucher) throws TravelVoucherDAOException;
 
 }

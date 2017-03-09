@@ -33,6 +33,7 @@ public class TourDAOImpl implements TourDAO {
     private static final String SQL_INSERT_TOUR = "INSERT tour SET  dateStart= ?, dateFinish = ?, " +
             " tur_type = ?, menu_type =?, cost =? , booking= ?, " +
             " hotel = ?, city=?";
+    private static final String SELECT_TOUR_BY_ID = " SELECT * FROM tour WHERE idtur=?";
 
 
     public Tour create(Tour tour) throws TourDAOException {
@@ -137,9 +138,9 @@ public class TourDAOImpl implements TourDAO {
 
     public Tour getTourById(int id) throws TourDAOException {
         Tour tour = new Tour();
-        try {
-            Statement statement = Connector.getDbCon().createStatement();
-            ResultSet rs = statement.executeQuery(SQL_SELECT_ALL+" WHERE idtur="+id);
+        try (PreparedStatement preparedStatement = Connector.getDbCon().prepareStatement(SELECT_TOUR_BY_ID)){
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()){
                 tour.setIdtur(rs.getInt("idtur"));
@@ -151,6 +152,7 @@ public class TourDAOImpl implements TourDAO {
                 tour.setHotel(rs.getString("hotel"));
                 tour.setCity(rs.getString("city"));
                 tour.setDeleted(rs.getByte("deleted"));
+                tour.setBooking(rs.getByte("booking"));
             }
         } catch (SQLException e) {
             logger.error(e);

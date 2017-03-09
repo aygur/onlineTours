@@ -2,7 +2,7 @@ package com.naraikin.onlinetours.controllers;
 
 import com.naraikin.onlinetours.common.exception.ClientServiceException;
 import com.naraikin.onlinetours.models.pojo.Client;
-import com.naraikin.onlinetours.services.ClientService;
+import com.naraikin.onlinetours.services.interfaces.ClientService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

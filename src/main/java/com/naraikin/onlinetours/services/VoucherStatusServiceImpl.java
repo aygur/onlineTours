@@ -7,6 +7,7 @@ package com.naraikin.onlinetours.services;
 import com.naraikin.onlinetours.common.exception.VoucherStatusDAOException;
 import com.naraikin.onlinetours.models.dao.VoucherStatusDAO;
 import com.naraikin.onlinetours.models.pojo.VoucherStatus;
+import com.naraikin.onlinetours.services.interfaces.VoucherStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

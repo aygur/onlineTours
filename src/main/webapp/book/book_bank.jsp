@@ -12,7 +12,7 @@
 <%@ include file="../template/head.jsp" %>
 <%@ include file="../template/body-head.jsp" %>
 
-<h3>Оплата туристической путевки</h3>
+<h3>Банковский перевод</h3>
 
 <table class="table table-hover">
     <thead>
@@ -35,16 +35,21 @@
         <td>${travelVoucher.tour.hotel}</td>
         <td>${travelVoucher.tour.city}</td>
         <td>${travelVoucher.booking_date}</td>
-            <form action="/bank" method="GET">
-                <input type="hidden" name="idtur" id="idtur" value="${travelVoucher.idtravel_voucher}" >
-                <input type="submit" value="Оплатить">
-            </form>
-        <form action="/book_cancel" method="post">
-            <input type="hidden" name="id" id="id" value="${travelVoucher.idtravel_voucher}" >
-            <input type="submit" value="Отменить бронирование">
+        <form action="/bank" method="post">
+            <c:out value="${error}"></c:out>
+            <c:out value="${one} "></c:out>
+            <label>${one} + ${two} = ?</label>
+            <input type="text" name="sum_user" id="sum_user" value="">
+            <input type="hidden" name="idtur" id="idtur" value="${travelVoucher.idtravel_voucher}" >
+            <input type="submit" value="Оплатить">
         </form>
+
 
     </tr>
 </table>
+<form action="/book_cancel" method="post">
+    <input type="hidden" name="id" id="id" value="${travelVoucher.idtravel_voucher}" >
+    <input type="submit" value="Отменить бронирование">
+</form>
 
 <%@ include file="../template/body-footer.html" %>

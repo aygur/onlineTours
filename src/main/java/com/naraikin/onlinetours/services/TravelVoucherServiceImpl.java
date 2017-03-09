@@ -3,9 +3,9 @@ package com.naraikin.onlinetours.services;
 import com.naraikin.onlinetours.common.exception.TravelVoucherDAOException;
 import com.naraikin.onlinetours.common.exception.TravelVoucherServiceException;
 import com.naraikin.onlinetours.models.dao.TravelVoucherDAO;
-import com.naraikin.onlinetours.models.dao.TravelVoucherDAOImpl;
 import com.naraikin.onlinetours.models.pojo.Client;
 import com.naraikin.onlinetours.models.pojo.TravelVoucher;
+import com.naraikin.onlinetours.services.interfaces.TravelVoucherService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,6 +73,16 @@ public class TravelVoucherServiceImpl implements TravelVoucherService {
     public List<TravelVoucher> getAllByClient(Client client)  throws TravelVoucherServiceException{
         try {
             return travelVoucherDAO.getAllByClient(client);
+        } catch (TravelVoucherDAOException e) {
+            logger.error(e);
+            throw new TravelVoucherServiceException();
+        }
+    }
+
+    @Override
+    public Integer updateTravelVoucher(TravelVoucher travelVoucher) throws TravelVoucherServiceException {
+        try {
+            return travelVoucherDAO.updateTravelVoucher(travelVoucher);
         } catch (TravelVoucherDAOException e) {
             logger.error(e);
             throw new TravelVoucherServiceException();

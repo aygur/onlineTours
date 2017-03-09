@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.services;
+package com.naraikin.onlinetours.services.interfaces;
 
 import com.naraikin.onlinetours.common.exception.ClientServiceException;
 import com.naraikin.onlinetours.models.pojo.Client;

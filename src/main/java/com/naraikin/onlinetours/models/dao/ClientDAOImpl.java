@@ -35,9 +35,8 @@ public class ClientDAOImpl implements ClientDAO {
             " WHERE idclient = ?";
 
     public boolean registrationClient(Client client) throws ClientDAOException {
-        Connection connection = Connector.getDbCon();
         try(PreparedStatement ps
-                    = connection.prepareStatement(SQL_CREATE_CLIENT_REGISTRATION_ALL)) {
+                    = Connector.getDbCon().prepareStatement(SQL_CREATE_CLIENT_REGISTRATION_ALL)) {
 
             ps.setString(1, client.getLastName());
             ps.setString(2, client.getFirstName());
@@ -94,8 +93,7 @@ public class ClientDAOImpl implements ClientDAO {
     }
 
     public boolean setClientBlocked(Client client) throws ClientDAOException {
-        Connection conn = Connector.getDbCon();
-        try (PreparedStatement prepS = conn.prepareStatement(SQL_SET_DELETE)) {
+        try (PreparedStatement prepS = Connector.getDbCon().prepareStatement(SQL_SET_DELETE)) {
 
             prepS.setShort(1, client.getBlocked());
             prepS.setInt(2, client.getIdclient());
@@ -118,8 +116,7 @@ public class ClientDAOImpl implements ClientDAO {
     public Client getClientByLoginAndPassword(String login, String password) throws ClientDAOException {
         Client client = new Client();
         logger.trace("Connection to DB");
-        Connection conn = Connector.getDbCon();
-        try (PreparedStatement prepS = conn.prepareStatement(SQL_FIND_CLIENT)) {
+        try (PreparedStatement prepS = Connector.getDbCon().prepareStatement(SQL_FIND_CLIENT)) {
             prepS.setString(1, login);
             prepS.setString(2, password);
             ResultSet resultSet = prepS.executeQuery();
@@ -200,8 +197,7 @@ public class ClientDAOImpl implements ClientDAO {
     public Client getClientById(int id) throws ClientDAOException {
         Client client = new Client();
         logger.trace("Connection to DB");
-        Connection conn = Connector.getDbCon();
-        try (PreparedStatement prepS = conn.prepareStatement(SQL_SELECT_CLIENT_BY_ID)) {
+        try (PreparedStatement prepS = Connector.getDbCon().prepareStatement(SQL_SELECT_CLIENT_BY_ID)) {
             prepS.setInt(1, id);
             ResultSet resultSet = prepS.executeQuery();
             while (resultSet.next()){

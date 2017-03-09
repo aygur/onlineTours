@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c"
            uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ include file="../template/head.jsp" %>
 <%@ include file="../template/body-head.jsp" %>
 
@@ -114,6 +115,7 @@
     </div>
                 <div class="col-lg-6">
                     <h3>Список тур. путевок</h3>
+
                     <table class="table table-hover">
                         <thead>
                         <td>№</td>
@@ -140,13 +142,11 @@
                                 <td>${travelVoucher.booking_date}</td>
                                 <td>${travelVoucher.payment_num}</td>
                                 <td>${travelVoucher.voucherStatus.status}</td>
-                                <c:out value="${travelVoucher.client.idclient}" ></c:out>
-                                <td><% if (session.getAttribute("id")       ) { %>
+                                <td>
+                                <c:if test="${travelVoucher.client.idclient == sessionScope.get(\"id\")}">
                                     <a href="/book_after?id=${travelVoucher.idtravel_voucher}">
                                         Оплатить или Отменить тур</a>
-                                    <% } else {%>
-                                    <p> other content </p>
-                                    <% } %>
+                                    </c:if>
 
                             </tr>
                         </c:forEach>

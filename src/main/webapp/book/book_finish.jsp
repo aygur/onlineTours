@@ -12,8 +12,8 @@
 <%@ include file="../template/head.jsp" %>
 <%@ include file="../template/body-head.jsp" %>
 
-<h3>Оплата туристической путевки</h3>
-
+<h3>Туристический ваучер</h3>
+<p>Туристический ваучер оплачен, жалаем Вам приятного отдыха</p>
 <table class="table table-hover">
     <thead>
     <td>Дата начала</td>
@@ -24,7 +24,7 @@
     <td>Отель</td>
     <td>Расположение</td>
     <td>Date booking</td>
-    <td>Операции</td>
+    <td>Дата оплаты</td>
     </thead>
     <tr>
         <td>${travelVoucher.tour.dateStart}</td>
@@ -35,15 +35,8 @@
         <td>${travelVoucher.tour.hotel}</td>
         <td>${travelVoucher.tour.city}</td>
         <td>${travelVoucher.booking_date}</td>
-            <form action="/bank" method="GET">
-                <input type="hidden" name="idtur" id="idtur" value="${travelVoucher.idtravel_voucher}" >
-                <input type="submit" value="Оплатить">
-            </form>
-        <form action="/book_cancel" method="post">
-            <input type="hidden" name="id" id="id" value="${travelVoucher.idtravel_voucher}" >
-            <input type="submit" value="Отменить бронирование">
-        </form>
-
+        <td>${travelVoucher.payment_num}</td>
+        <td>${travelVoucher.voucherStatus.status}</td>
     </tr>
 </table>
 

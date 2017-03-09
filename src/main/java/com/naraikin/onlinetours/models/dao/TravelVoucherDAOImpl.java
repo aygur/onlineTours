@@ -53,12 +53,13 @@ public class TravelVoucherDAOImpl implements TravelVoucherDAO {
             "where idtravel_voucher = ? ";
     public static final String SELECT_TRAVEL_VOUCHERS_BY_ID= "SELECT * FROM travel_voucher WHERE idtravel_voucher=?";
     public static final String SELECT_TRAVEL_VOUCHERS_BY_CLIENT= "SELECT * FROM travel_voucher WHERE client_id=?";
-//    public static final String INSERT_TRAVEL_VOUCHERS = "INSERT INTO travel_voucher " +
-//            "(tour_id, client_id, status_id, payment_date, booking_date, payment_num)" +
-//            "VALUES(?, ?, ?, ?, ? , ? )";
+    public static final String UPDATE_TRAVEL_VOUCHERS = "UPDATE travel_voucher " +
+            "SET payment_date = ?, payment_num =?, status_id = ? " +
+            "WHERE idtravel_voucher =?";
     public static final String INSERT_TRAVEL_VOUCHERS = "INSERT INTO travel_voucher " +
             "(tour_id, client_id, status_id, booking_date)" +
             "VALUES(?, ?, ?, ? )";
+
 
 
     public List<TravelVoucher> getAllByClient(Client client)  throws TravelVoucherDAOException{
@@ -199,6 +200,24 @@ public class TravelVoucherDAOImpl implements TravelVoucherDAO {
             throw new TravelVoucherDAOException();
         }
         return rs;
+    }
+
+    @Override
+    public Integer updateTravelVoucher(TravelVoucher travelVoucher) throws TravelVoucherDAOException {
+        int id_v = 0;
+        try (PreparedStatement ps
+                     = Connector.getDbCon().prepareStatement(UPDATE_TRAVEL_VOUCHERS)){
+
+            ps.setTimestamp(1, travelVoucher.getPayment_date());
+            ps.setString(2, travelVoucher.getPayment_num());
+            ps.setInt(3, 2);
+            ps.setInt(4, travelVoucher.getIdtravel_voucher());
+            id_v = ps.executeUpdate();
+        } catch (SQLException e){
+            logger.error(e);
+            throw new TravelVoucherDAOException();
+        }
+        return id_v;
     }
 
 
