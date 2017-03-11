@@ -27,8 +27,6 @@ public class ClientServiceImpl implements ClientService {
         this.clientDAO = clientDAO;
     }
 
-
-
     public Client authorize(String login, String password) throws ClientServiceException {
         try {
             return clientDAO.getClientByLoginAndPassword(login, password);
@@ -40,12 +38,15 @@ public class ClientServiceImpl implements ClientService {
 
     public boolean registration(Client client) throws ClientServiceException {
         try {
+            String password = client.getPassword();
+            String email = client.getEmail();
             return clientDAO.registrationClient(client);
         } catch (ClientDAOException e) {
             logger.error(e);
             throw new ClientServiceException();
         }
     }
+
 
     public boolean registration(String login, String password, String email) throws ClientServiceException {
         try {

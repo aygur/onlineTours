@@ -13,9 +13,8 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-md-8">
 
-<a href="/tour/add">Добавить Тур</a>
     <table class="table table-hover">
         <thead>
         <td>Дата начала</td>

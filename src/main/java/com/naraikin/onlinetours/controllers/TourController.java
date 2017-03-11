@@ -102,7 +102,6 @@ public class TourController {
                                    @RequestParam(name = "hotel") String hotel,
                                    @RequestParam(name = "city") String city,
                                    @RequestParam(name = "deleted") String deleted) {
-        //model.("UTF-8");
         Tour tour = new Tour(
                 Integer.parseInt(idtur),
                 Date.valueOf(dateStart),

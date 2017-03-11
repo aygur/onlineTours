@@ -14,9 +14,10 @@
 <%@ include file="../template/body-head.jsp" %>
 
 <c:set var="client" value="${client}" />
+    <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4">
-        <h3>About you</h3>
+        <div class="col-md-3">
+        <h3>About client</h3>
         <a href="/client/edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             Редактирование личных данных</a>
         <table class="table">
@@ -113,7 +114,7 @@
             </tbody>
         </table>
     </div>
-                <div class="col-lg-6">
+                <div class="col-md-5">
                     <h3>Список тур. путевок</h3>
 
                     <table class="table table-hover">
@@ -128,7 +129,6 @@
                         <td>booking_date</td>
                         <td>Номер оплаты</td>
                         <td>Статус</td>
-                        <td>Покупатель</td>
                         <td>Операции</td>
                         </thead>
                         <c:forEach items="${travelVouchers}" var="travelVoucher">
@@ -144,8 +144,18 @@
                                 <td>${travelVoucher.voucherStatus.status}</td>
                                 <td>
                                 <c:if test="${travelVoucher.client.idclient == sessionScope.get(\"id\")}">
-                                    <a href="/book_after?id=${travelVoucher.idtravel_voucher}">
-                                        Оплатить или Отменить тур</a>
+                                    <c:choose>
+                                        <c:when test="${travelVoucher.voucherStatus.idvoucher_status == 1}">
+                                        <a href="/book_after?id=${travelVoucher.idtravel_voucher}">
+                                            Оплатить или Отменить тур</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="/voucher?idtur=${travelVoucher.idtravel_voucher}">
+                                        Просмотр Ваучера</a>
+                                    </c:otherwise>
+                                    </c:choose>
+
+
                                     </c:if>
 
                             </tr>
@@ -153,5 +163,5 @@
                     </table>
     </div>
 </div>
-
+    </div>
 <%@ include file="../template/body-footer.html" %>

@@ -63,6 +63,7 @@ public class BookingController {
     public String bookingTourGetPage(Model model, @RequestParam(name = "idtur") Integer idtur) {
         try {
             Tour tour = tourService.getTourById(idtur);
+
             model.addAttribute("tourItem", tour);
             return "book/book_before";
         } catch (TourServiceException e) {
@@ -126,8 +127,8 @@ public class BookingController {
         try {
             TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
             Random random = new Random();
-            Integer oneS = random.nextInt(100);
-            Integer twoS = random.nextInt(50);
+            Integer oneS = random.nextInt(10);
+            Integer twoS = random.nextInt(10);
             this.sum = oneS + twoS;
             model.addAttribute("travelVoucher", travelVoucher);
             model.addAttribute("one", oneS);
@@ -149,16 +150,10 @@ public class BookingController {
                 travelVoucher.setPayment_num(sum_user.toString()+Timestamp.valueOf(LocalDateTime.now()).getTime());
                 travelVoucherService.updateTravelVoucher(travelVoucher);
                 model.addAttribute("travelVoucher", travelVoucher);
-                return "book/book_finish";
-            } else{
-                Random random = new Random();
-                Integer oneS = random.nextInt(100);
-                Integer twoS = random.nextInt(50);
-                this.sum = oneS + twoS;
-                model.addAttribute("one", oneS);
-                model.addAttribute("two", twoS);
-                model.addAttribute("travelVoucher", travelVoucher);
+                return "redirect:/voucher?idtur="+id;
+            } else {
                 model.addAttribute("error", "Оплата не прошла, повтор");
+                model.addAttribute("idtur", id);
                 return "book/book_bank";
             }
 
@@ -167,6 +162,18 @@ public class BookingController {
             return "redirect:" + "/error";
         }
     }
+    @RequestMapping(value = "/voucher", method = RequestMethod.GET)
+    public String voucherGetPage(Model model, @RequestParam(name = "idtur") Integer id) {
+        try {
+            TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
+            model.addAttribute("travelVoucher", travelVoucher);
+            return "book/book_finish";
+        } catch (TravelVoucherServiceException e) {
+            logger.error(e);
+            return "redirect:" + "/error";
+        }
+    }
+
 
 
 }

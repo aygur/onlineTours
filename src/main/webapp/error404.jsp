@@ -8,13 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Error</title>
+    <title>Error 404</title>
 </head>
 <body>
-<h3>Error</h3>
+<center><h1>Error 404</h1></center>
 <br>
 <p>
-    Все хорошо, попробуйте позже.
+    <h1>Тут вам не здесь!!!</h1>
 </p>
 <p>${exception}</p>
 <p>

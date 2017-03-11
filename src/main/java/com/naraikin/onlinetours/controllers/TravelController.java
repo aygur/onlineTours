@@ -7,10 +7,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,16 +32,20 @@ public class TravelController {
     }
 
     @RequestMapping(value = "/vouchers",method = RequestMethod.GET)
-    public String ListVouchersGetPage(Model model){
-        try {
+    public String ListVouchersGetPage(Model model) throws TravelVoucherServiceException {
             List<TravelVoucher> travelVouchers = travelVoucherService.getAll();
             model.addAttribute("travelVouchers", travelVouchers);
             return "voucher/list";
-        } catch (TravelVoucherServiceException e) {
-            logger.error(e);
-            return "redirect:" + "/error";
-        }
+    }
 
+    @ExceptionHandler(TravelVoucherServiceException.class)
+    public ModelAndView handleTravelVoucherServiceException(
+            TravelVoucherServiceException exception, HttpServletRequest req) {
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("message", exception.getMessage());
+        modelAndView.addObject("url", req.getRequestURL());
+        logger.error(exception);
+        return modelAndView;
     }
 
 }
