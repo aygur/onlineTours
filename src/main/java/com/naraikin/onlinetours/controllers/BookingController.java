@@ -79,6 +79,9 @@ public class BookingController {
             TravelVoucher voucher = new TravelVoucher();
 
             Tour tour = tourService.getTourById(idtur);
+            if(tourService.isBookingNow(tour)){
+                return "redirect:" + "/error"; //// Быстрая проверка
+            }
             tour.setBooking((short)1);
             voucher.setTour(tour);
 
@@ -115,6 +118,7 @@ public class BookingController {
         try {
             TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
             travelVoucherService.deleteTravelVoucher(travelVoucher);
+            model.addAttribute("errors", "Бронирование тура "+id + " отменено");
             return "redirect:/dashboard";
         } catch (TravelVoucherServiceException e) {
             logger.error(e);
@@ -152,8 +156,14 @@ public class BookingController {
                 model.addAttribute("travelVoucher", travelVoucher);
                 return "redirect:/voucher?idtur="+id;
             } else {
-                model.addAttribute("error", "Оплата не прошла, повтор");
-                model.addAttribute("idtur", id);
+                Random random = new Random();
+                Integer oneS = random.nextInt(10);
+                Integer twoS = random.nextInt(10);
+                this.sum = oneS + twoS;
+                model.addAttribute("one", oneS);
+                model.addAttribute("two", twoS);
+                model.addAttribute("errors", "Оплата не прошла, повтор");
+                model.addAttribute("travelVoucher", travelVoucher);
                 return "book/book_bank";
             }
 
@@ -173,7 +183,4 @@ public class BookingController {
             return "redirect:" + "/error";
         }
     }
-
-
-
 }

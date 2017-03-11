@@ -16,4 +16,5 @@ public interface TourService {
     void createTour(Tour tour) throws TourServiceException;
     void setDeleteTour(Tour tour) throws TourServiceException;
     void setBooking(Tour tour) throws TourServiceException;
+    boolean isBookingNow(Tour tour) throws TourServiceException;
 }

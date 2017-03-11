@@ -79,4 +79,8 @@ public class TourServiceImpl implements TourService {
             throw new TourServiceException();
         }
     }
+
+    public boolean isBookingNow(Tour tour) throws TourServiceException {
+       return tour.getBooking() > 0;
+    }
 }

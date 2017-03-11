@@ -13,6 +13,7 @@
 <%@ include file="../template/body-head.jsp" %>
 
 <h3>Подтверждение бронирование тура:</h3>
+
 <table class="table table-hover">
     <thead>
     <td>Дата начала</td>
@@ -23,7 +24,6 @@
     <td>Отель</td>
     <td>Расположение</td>
     <td>Забронирован</td>
-    <td>Операции</td>
     </thead>
     <tr>
         <td>${tourItem.dateStart}</td>
@@ -37,9 +37,17 @@
 
     </tr>
 </table>
-<form action="/book_before" method="post">
-    <input type="hidden" name="idtur" id="idtur" value="${tourItem.idtur}" >
-    <input type="submit" value="Я бронирою тур">
-</form>
+<c:choose>
+    <c:when test="${tourItem.booking == 0}">
+        <form action="/book_before" method="post">
+            <input type="hidden" name="idtur" id="idtur" value="${tourItem.idtur}" >
+            <input type="submit" value="Да, бронирою тур">
+        </form>
+    </c:when>
+    <c:otherwise>
+        <p>Данный тур уже забронирован</p>
+    </c:otherwise>
+</c:choose>
+
 
 <%@ include file="../template/body-footer.html" %>
