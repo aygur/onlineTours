@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.List;
 
@@ -30,17 +31,25 @@ public class TourController {
 
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public String dashbordPage(Model model){
+    public String dashbordPage(Model model, HttpSession session){
         try {
-            List<Tour> tourList = tourService.getAllTour();
-            model.addAttribute("tourList", tourList);
-            logger.trace("Get list of tours");
-
+            if("admin".equals(session.getAttribute("role"))){
+                logger.trace("authorized Admin");
+                List<Tour> tourList = tourService.getAllTour();
+                model.addAttribute("tourList", tourList);
+                logger.trace("Get list of tours for admin");
+                return "tour/list";
+            } else {
+                List<Tour> tourList = tourService.getAllTourForClient();
+                model.addAttribute("tourList", tourList);
+                logger.trace("Get list of tours for client");
+                return "tour/dashboard";
+            }
         } catch (TourServiceException e) {
             logger.trace(e);
             return "redirect:"+"/error";
         }
-        return "tour/list";
+
     }
 
 

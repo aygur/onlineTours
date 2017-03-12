@@ -22,6 +22,7 @@ public class TourDAOImpl implements TourDAO {
     private static Logger logger = Logger.getLogger(TourDAOImpl.class);
 
     private static final String SQL_SELECT_ALL = "SELECT * FROM tour";
+    private static final String SQL_SELECT_ALL_FOR_CLIENT = "SELECT * FROM tour WHERE deleted=0 AND booking=0";
     private static final String SQL_DELETE_TOUR = "UPDATE tour SET deleted=? " +
             " WHERE idtur = ?";
     private static final String SQL_BOOK_TOUR = "UPDATE tour SET booking=? " +
@@ -108,6 +109,32 @@ public class TourDAOImpl implements TourDAO {
             logger.error(se);
             throw new TourDAOException();
         }
+    }
+
+    public List<Tour> getAllTourForClient() throws TourDAOException{
+        List<Tour> list = new ArrayList<>();
+        try (Statement statement = Connector.getDbCon().createStatement()){
+            ResultSet rs = statement.executeQuery(SQL_SELECT_ALL_FOR_CLIENT);
+
+            while (rs.next()){
+                Tour tour = new Tour();
+                tour.setIdtur(rs.getInt("idtur"));
+                tour.setDateStart(rs.getDate("dateStart"));
+                tour.setDateFinish(rs.getDate("dateFinish"));
+                tour.setTur_type(rs.getString("tur_type"));
+                tour.setMenu_type(rs.getString("menu_type"));
+                tour.setCost(rs.getDouble("cost"));
+                tour.setHotel(rs.getString("hotel"));
+                tour.setCity(rs.getString("city"));
+                tour.setBooking(rs.getByte("booking"));
+                tour.setDeleted(rs.getByte("deleted"));
+                list.add(tour);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new TourDAOException();
+        }
+        return list;
     }
 
     public List<Tour> getAll() throws TourDAOException {

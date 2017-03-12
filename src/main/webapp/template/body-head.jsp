@@ -16,14 +16,17 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/dashboard">Tours</a></li>
-                <li><a href="/clients">Clients</a></li>
-                <li><a href="/vouchers">Vouchers</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Дополнительно<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/tour/add">Добавить Тур</a></li>
-                    </ul>
-                </li>
+                <c:if test="${sessionScope.get(\"role\") == \"admin\"}">
+                    <li><a href="/clients">Clients</a></li>
+                    <li><a href="/vouchers">Vouchers</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Дополнительно<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/tour/add">Добавить Тур</a></li>
+                        </ul>
+                    </li>
+                </c:if>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/LKClient">Welcome ${sessionScope.get("login")}</a></li>

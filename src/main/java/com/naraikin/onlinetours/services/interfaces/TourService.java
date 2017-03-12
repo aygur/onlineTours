@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface TourService {
     List<Tour> getAllTour() throws TourServiceException;
+    List<Tour> getAllTourForClient() throws TourServiceException;
     Tour getTourById(int id) throws TourServiceException;
     void updateTour(Tour tour) throws TourServiceException;
     void createTour(Tour tour) throws TourServiceException;

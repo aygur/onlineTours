@@ -118,7 +118,7 @@ public class BookingController {
         try {
             TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
             travelVoucherService.deleteTravelVoucher(travelVoucher);
-            model.addAttribute("errors", "Бронирование тура "+id + " отменено");
+            //model.addAttribute("errors", "Бронирование тура "+id + " отменено");
             return "redirect:/dashboard";
         } catch (TravelVoucherServiceException e) {
             logger.error(e);

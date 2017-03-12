@@ -36,13 +36,15 @@
             <td>${tourItem.city}</td>
             <td>${tourItem.booking}</td>
             <td>${tourItem.deleted}</td>
-            <td><a href="/tour/edit?id=${tourItem.idtur}">Edit</a>
-                <form action="/tour/delete" method="post">
-                    <input type="hidden" name="idtur" id="idtur" value="${tourItem.idtur}" >
-                    <input type="hidden" name="deleted" id="deleted" value="${tourItem.deleted}" >
-                    <input type="submit" value="Delete">
-                </form>
-
+            <c:if test="${sessionScope.get(\"role\") == \"admin\"}">
+                <td><a href="/tour/edit?id=${tourItem.idtur}">Edit</a>
+                    <form action="/tour/delete" method="post">
+                        <input type="hidden" name="idtur" id="idtur" value="${tourItem.idtur}" >
+                        <input type="hidden" name="deleted" id="deleted" value="${tourItem.deleted}" >
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </c:if>
         </tr>
 </table>
 

@@ -18,12 +18,22 @@ import java.util.List;
 public class TourServiceImpl implements TourService {
     private static Logger logger = Logger.getLogger(TourServiceImpl.class);
 
-    @Autowired
+
     private TourDAO tourDAO;
 
-
+    @Autowired
     public void setTourDAO(TourDAO tourDAO) {
         this.tourDAO = tourDAO;
+    }
+
+    public List<Tour> getAllTourForClient() throws TourServiceException{
+        try {
+            return tourDAO.getAllTourForClient();
+        } catch (TourDAOException e) {
+            logger.error(e);
+            throw new TourServiceException();
+        }
+
     }
 
     public List<Tour> getAllTour() throws TourServiceException {

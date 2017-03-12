@@ -46,6 +46,7 @@ public class LoginLogoutController {
                 logger.trace("authorized");
                 session.setAttribute("login", login);
                 session.setAttribute("id", client.getIdclient());
+                session.setAttribute("role", client.getRole());
                 return "redirect:" + "/dashboard";
 
             } else {
