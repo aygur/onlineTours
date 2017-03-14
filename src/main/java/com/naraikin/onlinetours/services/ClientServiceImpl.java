@@ -8,6 +8,7 @@ import com.naraikin.onlinetours.services.interfaces.ClientService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -40,6 +41,8 @@ public class ClientServiceImpl implements ClientService {
         try {
             String password = client.getPassword();
             String email = client.getEmail();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            client.setPassword(encoder.encode(password));
             return clientDAO.registrationClient(client);
         } catch (ClientDAOException e) {
             logger.error(e);
@@ -59,6 +62,10 @@ public class ClientServiceImpl implements ClientService {
 
     public boolean update(Client client) throws ClientServiceException {
         try {
+            String password = client.getPassword();
+            String email = client.getEmail();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            client.setPassword(encoder.encode(password));
             return clientDAO.updateClient(client);
         } catch (ClientDAOException e) {
             logger.error(e);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,6 +101,9 @@ public class LoginLogoutController {
                                        @RequestParam(name = "email") String email){
         logger.trace("on post");
 
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        logger.trace("======================================> " + encoder.encode(password));
+            //encoder.matches(password, user.getPassword());
         Client client = new Client(0,
                 lastName,
                 firstName,

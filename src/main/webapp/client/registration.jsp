@@ -19,7 +19,7 @@
         <label for="login" class="sr-only">Login</label>
         <input type="text" id="login" name="login" value="" class="form-control" placeholder="Login" required autofocus>
         <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" value="" class="form-control" placeholder="Password" required>
+        <input type="password" id="password" name="password" minlength="8" value="" class="form-control" placeholder="Password" required>
         <label for="email" class="sr-only">Email</label>
         <input type="email" id="email" name="email" value="" class="form-control" placeholder="Email" required>
         <label for="lastName" class="sr-only">Last Name</label>
