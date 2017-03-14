@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="security"
+           uri="http://www.springframework.org/security/tags" %>
 <body>
 
 <!-- Fixed navbar -->
@@ -16,7 +18,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/dashboard">Tours</a></li>
-                <c:if test="${sessionScope.get(\"role\") == \"admin\"}">
+                <security:authorize access="hasRole('ROLE_ADMIN')">
                     <li><a href="/clients">Clients</a></li>
                     <li><a href="/vouchers">Vouchers</a></li>
                     <li class="dropdown">
@@ -25,11 +27,14 @@
                             <li><a href="/tour/add">Добавить Тур</a></li>
                         </ul>
                     </li>
-                </c:if>
+                </security:authorize>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/LKClient">Welcome ${sessionScope.get("login")}</a></li>
+                <li>
+                        <a href="/LKClient">Hello <security:authentication property="principal.username" />!</a>
+                </li>
+                    <%--<li><a href="/logout">Logout</a></li>--%>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </div><!--/.nav-collapse -->

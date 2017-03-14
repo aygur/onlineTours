@@ -1,5 +1,6 @@
 package com.naraikin.onlinetours.controllers;
 
+import com.naraikin.onlinetours.common.exception.TravelVoucherServiceException;
 import org.apache.log4j.Logger;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 /**
  * Created by dmitrii on 11.03.17.
@@ -31,5 +33,15 @@ public class ExceptionHandlerController {
         mav.setViewName(DEFAULT_404_ERROR_VIEW);
         logger.error(e);
         return mav;
+    }
+
+    @ExceptionHandler(TravelVoucherServiceException.class)
+    public ModelAndView handleTravelVoucherServiceException(
+            TravelVoucherServiceException exception, HttpServletRequest req) {
+        ModelAndView modelAndView = new ModelAndView(DEFAULT_ERROR_VIEW);
+        modelAndView.addObject("message", exception.getMessage());
+        modelAndView.addObject("url", req.getRequestURL());
+        logger.error(exception);
+        return modelAndView;
     }
 }

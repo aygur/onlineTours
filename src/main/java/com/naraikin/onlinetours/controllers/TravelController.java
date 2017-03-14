@@ -5,6 +5,7 @@ import com.naraikin.onlinetours.models.pojo.TravelVoucher;
 import com.naraikin.onlinetours.services.TravelVoucherServiceImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,21 +32,14 @@ public class TravelController {
         this.travelVoucherService = travelVoucherService;
     }
 
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(value = "/vouchers",method = RequestMethod.GET)
     public String ListVouchersGetPage(Model model) throws TravelVoucherServiceException {
             List<TravelVoucher> travelVouchers = travelVoucherService.getAll();
             model.addAttribute("travelVouchers", travelVouchers);
+            //throw new TravelVoucherServiceException();
             return "voucher/list";
     }
 
-    @ExceptionHandler(TravelVoucherServiceException.class)
-    public ModelAndView handleTravelVoucherServiceException(
-            TravelVoucherServiceException exception, HttpServletRequest req) {
-        ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.addObject("message", exception.getMessage());
-        modelAndView.addObject("url", req.getRequestURL());
-        logger.error(exception);
-        return modelAndView;
-    }
 
 }

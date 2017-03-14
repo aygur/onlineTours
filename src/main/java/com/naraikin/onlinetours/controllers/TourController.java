@@ -5,13 +5,17 @@ import com.naraikin.onlinetours.models.pojo.Tour;
 import com.naraikin.onlinetours.services.interfaces.TourService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.List;
 
@@ -29,11 +33,22 @@ public class TourController {
         this.tourService = tourService;
     }
 
-
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public String dashbordPage(Model model, HttpSession session){
+    public String dashbordPage(Model model){
         try {
-            if("admin".equals(session.getAttribute("role"))){
+            Authentication
+                    auth = SecurityContextHolder.getContext().getAuthentication();
+
+            boolean isAdmin = false;
+            for (GrantedAuthority a:
+                    auth.getAuthorities()) {
+                if(a.getAuthority().equals("ROLE_ADMIN")){
+                    isAdmin = true;
+                    break;
+                }
+            }
+            if(isAdmin){
                 logger.trace("authorized Admin");
                 List<Tour> tourList = tourService.getAllTour();
                 model.addAttribute("tourList", tourList);
@@ -52,12 +67,13 @@ public class TourController {
 
     }
 
-
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(value = "/tour/add", method = RequestMethod.GET)
     public String addTourGetPage(Model model){
         return "tour/add";
     }
 
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(value = "/tour/add", method = RequestMethod.POST)
     public String addTourPostPage(Model model,
                                   @RequestParam(name = "dateStart") String dateStart,
@@ -87,7 +103,7 @@ public class TourController {
         }
     }
 
-
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(value = "/tour/edit", method = RequestMethod.GET)
     public String editTourGetPage(Model model, @RequestParam(name = "id") String id){
         try {
@@ -100,6 +116,7 @@ public class TourController {
         return "tour/edit";
     }
 
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(value = "/tour/edit", method = RequestMethod.POST)
     public String editTourPostPage(@RequestParam(name = "idtur") String idtur,
                                    @RequestParam(name = "dateStart") String dateStart,
@@ -131,6 +148,7 @@ public class TourController {
         }
     }
 
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(value = "/tour/delete", method = RequestMethod.POST)
     public String deleteTourPostPage(@RequestParam(name = "idtur") Integer idtur,
                                    @RequestParam(name = "deleted") Short deleted) {
@@ -149,6 +167,7 @@ public class TourController {
             return "redirect:" + "/error";
         }
     }
+
 
     @RequestMapping(value = "/tour/details", method = RequestMethod.GET)
     public String detailTourGetPage(Model model, @RequestParam(name = "id") Integer id){

@@ -13,6 +13,9 @@ import com.naraikin.onlinetours.services.interfaces.TravelVoucherService;
 import com.naraikin.onlinetours.services.interfaces.VoucherStatusService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +33,8 @@ import java.util.Random;
 @Controller
 public class BookingController {
     static Logger logger = Logger.getLogger(BookingController.class);
+
     private Integer sum;
-
-
     private TourService tourService;
     private ClientService clientService;
     private VoucherStatusService voucherStatusService;
@@ -58,7 +60,7 @@ public class BookingController {
         this.clientService = clientService;
     }
 
-
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/book_before", method = RequestMethod.GET)
     public String bookingTourGetPage(Model model, @RequestParam(name = "idtur") Integer idtur) {
         try {
@@ -72,9 +74,9 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/book_before", method = RequestMethod.POST)
-    public String bookingTourPostPage(HttpSession session,
-                                      @RequestParam(name = "idtur") Integer idtur) {
+    public String bookingTourPostPage(@RequestParam(name = "idtur") Integer idtur) {
         try {
             TravelVoucher voucher = new TravelVoucher();
 
@@ -85,7 +87,9 @@ public class BookingController {
             tour.setBooking((short)1);
             voucher.setTour(tour);
 
-            Client client = clientService.getClientById((int) session.getAttribute("id"));
+            Authentication
+                    auth = SecurityContextHolder.getContext().getAuthentication();
+            Client client = clientService.getClientByLogin(auth.getName());
             voucher.setClient(client);
 
             VoucherStatus voucherStatus = voucherStatusService.getVoucherStatusById(1);
@@ -101,6 +105,7 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/book_after", method = RequestMethod.GET)
     public String afterTourGetPage(Model model, @RequestParam(name = "id") Integer id) {
         try {
@@ -113,6 +118,7 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/book_cancel", method = RequestMethod.POST)
     public String cancelTourPostPage(Model model, @RequestParam(name = "id") Integer id) {
         try {
@@ -126,6 +132,7 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/bank", method = RequestMethod.GET)
     public String bankGetPage(Model model, @RequestParam(name = "idtur") Integer id) {
         try {
@@ -144,6 +151,7 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/bank", method = RequestMethod.POST)
     public String bankPostPage(Model model, @RequestParam(name = "idtur") Integer id,
                                @RequestParam(name = "sum_user")Integer sum_user) {
@@ -172,6 +180,8 @@ public class BookingController {
             return "redirect:" + "/error";
         }
     }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/voucher", method = RequestMethod.GET)
     public String voucherGetPage(Model model, @RequestParam(name = "idtur") Integer id) {
         try {

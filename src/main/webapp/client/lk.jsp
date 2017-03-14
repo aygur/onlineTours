@@ -143,7 +143,9 @@
                                 <td>${travelVoucher.payment_num}</td>
                                 <td>${travelVoucher.voucherStatus.status}</td>
                                 <td>
-                                <c:if test="${travelVoucher.client.idclient == sessionScope.get(\"id\")}">
+                                       <security:authentication property="principal.username"
+                                                                 var="loginId"/>
+                                <c:if test="${travelVoucher.client.login == loginId}">
                                     <c:choose>
                                         <c:when test="${travelVoucher.voucherStatus.idvoucher_status == 1}">
                                         <a href="/book_after?id=${travelVoucher.idtravel_voucher}">
@@ -154,8 +156,6 @@
                                         Просмотр Ваучера</a>
                                     </c:otherwise>
                                     </c:choose>
-
-
                                     </c:if>
 
                             </tr>

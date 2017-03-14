@@ -66,6 +66,15 @@ public class ClientServiceImpl implements ClientService {
         }
     }
 
+    public Client getClientByLogin(String login) throws ClientServiceException{
+        try {
+            return clientDAO.getClientByLogin(login);
+        } catch (ClientDAOException e) {
+            logger.error(e);
+            throw new ClientServiceException();
+        }
+    }
+
     public Client getClientById(int id) throws ClientServiceException {
         try {
             return clientDAO.getClientById(id);

@@ -9,17 +9,19 @@ import java.util.List;
  * Created by dmitrii on 03.03.17.
  */
 public interface ClientDAO {
-    public boolean registrationClient(Client client) throws ClientDAOException;
 
-    public List<Client> getAll() throws ClientDAOException;
+    boolean registrationClient(Client client) throws ClientDAOException;
 
-    public boolean setClientBlocked(Client client) throws ClientDAOException;
+    List<Client> getAll() throws ClientDAOException;
 
-    public Client getClientByLoginAndPassword(String login, String password) throws ClientDAOException;
+    boolean setClientBlocked(Client client) throws ClientDAOException;
 
-    public boolean registrationClient(String login, String password, String email) throws ClientDAOException;
+    Client getClientByLoginAndPassword(String login, String password) throws ClientDAOException;
 
-    public boolean updateClient(Client client) throws ClientDAOException;
+    boolean registrationClient(String login, String password, String email) throws ClientDAOException;
 
-    public Client getClientById(int id) throws ClientDAOException;
+    boolean updateClient(Client client) throws ClientDAOException;
+
+    Client getClientById(int id) throws ClientDAOException;
+    Client getClientByLogin(String login) throws ClientDAOException;
 }

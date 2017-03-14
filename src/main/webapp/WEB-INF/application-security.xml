@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-4.2.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <http auto-config="true" use-expressions="true" >
+
+        <intercept-url pattern="/login*" access="hasRole('ROLE_ANONYMOUS')"/>
+        <intercept-url pattern="/registration" access="hasRole('ROLE_ANONYMOUS')"/>
+        <intercept-url pattern="/dashboard" access="hasRole('ROLE_USER') OR hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/client**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/tour**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/LKClient*" access="hasRole('ROLE_USER') OR hasRole('ROLE_ADMIN')" />
+        <form-login login-page="/login"
+                    login-processing-url="/j_spring_security_check"
+                    username-parameter="j_username"
+                    password-parameter="j_password"
+                    default-target-url="/dashboard"
+                    authentication-failure-url="/login?error=true"/>
+        <logout logout-url="/j_spring_security_logout"
+                logout-success-url="/login" invalidate-session="true"/>
+        <anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
+        <remember-me key="userKey"
+                     token-validity-seconds="1000"/>
+        <csrf disabled="true"/>
+    </http>
+
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource" users-by-username-query="
+         SELECT login, password, 1^blocked FROM client WHERE login=?;"
+                               authorities-by-username-query="
+        SELECT login, role
+        FROM client
+        WHERE login=?;"/>
+        </authentication-provider>
+    </authentication-manager>
+    <beans:bean id="authenticationTrustResolver"
+                class="org.springframework.security.authentication.AuthenticationTrustResolverImpl" />
+
+    <beans:bean id="dataSource"
+                class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <beans:property name="url" value="jdbc:mysql://localhost/mydb_tours" />
+        <beans:property name="username" value="root" />
+        <beans:property name="password" value="mysql2017" />
+    </beans:bean>
+</beans:beans>

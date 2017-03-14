@@ -22,6 +22,7 @@ public class ClientDAOImpl implements ClientDAO {
             " WHERE idclient = ?";
     private static final String SQL_FIND_CLIENT = "SELECT * FROM client where login=? AND password=?";
     private static final String SQL_SELECT_CLIENT_BY_ID = "SELECT * FROM client where idclient=?";
+    private static final String SQL_SELECT_CLIENT_BY_LOGIN = "SELECT * FROM client where login=?";
     private static final String SQL_CREATE_CLIENT_REGISTRATION =
             "INSERT INTO client (login, password, email, role) " +
                     "VALUES(?, ?, ?, ?)";
@@ -166,6 +167,7 @@ public class ClientDAOImpl implements ClientDAO {
     }
 
     public boolean updateClient(Client client) throws ClientDAOException{
+
         try( PreparedStatement ps = Connector.getDbCon()
                 .prepareStatement(SQL_UPDATE_CLIENT)) {
 
@@ -196,9 +198,38 @@ public class ClientDAOImpl implements ClientDAO {
 
     public Client getClientById(int id) throws ClientDAOException {
         Client client = new Client();
-        logger.trace("Connection to DB");
+        logger.trace("getClientById");
         try (PreparedStatement prepS = Connector.getDbCon().prepareStatement(SQL_SELECT_CLIENT_BY_ID)) {
             prepS.setInt(1, id);
+            ResultSet resultSet = prepS.executeQuery();
+            while (resultSet.next()){
+                client.setIdclient(resultSet.getInt("idclient"));
+                client.setLastName(resultSet.getString("lastName"));
+                client.setFirstName(resultSet.getString("firstName"));
+                client.setPhone(resultSet.getString("phone"));
+                client.setDoc(resultSet.getString("doc"));
+                client.setBirthDate(resultSet.getDate("birthDate"));
+                client.setAddress(resultSet.getString("address"));
+                client.setGender(resultSet.getString("gender"));
+                client.setLogin(resultSet.getString("login"));
+                client.setPassword(resultSet.getString("password"));
+                client.setEmail(resultSet.getString("email"));
+                client.setRole(resultSet.getString("role"));
+                client.setBlocked(resultSet.getByte("blocked"));
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new ClientDAOException();
+        }
+        logger.trace("Return user");
+        return client;
+    }
+
+    public Client getClientByLogin(String login) throws ClientDAOException{
+        Client client = new Client();
+        logger.trace("getClientByLogin");
+        try (PreparedStatement prepS = Connector.getDbCon().prepareStatement(SQL_SELECT_CLIENT_BY_LOGIN)) {
+            prepS.setString(1, login);
             ResultSet resultSet = prepS.executeQuery();
             while (resultSet.next()){
                 client.setIdclient(resultSet.getInt("idclient"));
