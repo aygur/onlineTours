@@ -32,7 +32,7 @@ public class customUserDetailsService implements UserDetailsService {
             logger.error(e);
         }
         System.out.println("User : "+client.getLogin());
-        if(client==null){
+        if(client == null){
             System.out.println("User not found");
             throw new UsernameNotFoundException("Username not found");
         }

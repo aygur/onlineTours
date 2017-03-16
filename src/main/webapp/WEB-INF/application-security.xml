@@ -25,7 +25,7 @@
                 logout-success-url="/login" invalidate-session="true"/>
         <anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
         <remember-me key="userKey"
-                     token-validity-seconds="1000"/>
+                     token-validity-seconds="6000"/>
         <csrf disabled="true"/>
     </http>
 

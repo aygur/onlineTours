@@ -122,11 +122,11 @@ public class LoginLogoutController {
             if(clientService.registration(client)) {
                 logger.trace("registration ok");
                 model.addAttribute("error", "Регистрация успешна! Войдите в систему");
-                return "redirect:"+"client/login";
+                return "redirect:"+"login";
             }else{
                 logger.trace("not registration");
                 model.addAttribute("error", "Допущена ошибка при вводе данных");
-                return "redirect:" + "client/registration";
+                return "redirect:" + "registration";
             }
         } catch (ClientServiceException e) {
             logger.error(e);
