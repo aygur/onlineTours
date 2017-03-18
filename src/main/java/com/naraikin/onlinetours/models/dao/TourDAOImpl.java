@@ -2,6 +2,7 @@ package com.naraikin.onlinetours.models.dao;
 
 import com.naraikin.onlinetours.common.exception.TourDAOException;
 import com.naraikin.onlinetours.models.connector.Connector;
+import com.naraikin.onlinetours.models.dao.interfaces.TourDAO;
 import com.naraikin.onlinetours.models.pojo.Tour;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Created by dmitrii on 25.02.17.
  */
-@Repository
+@Repository("TourDAOImpl")
 public class TourDAOImpl implements TourDAO {
 
     private static Logger logger = Logger.getLogger(TourDAOImpl.class);

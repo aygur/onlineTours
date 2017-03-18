@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.models.dao;
+package com.naraikin.onlinetours.models.dao.interfaces;
 
 import com.naraikin.onlinetours.common.exception.ClientDAOException;
 import com.naraikin.onlinetours.common.exception.TourDAOException;

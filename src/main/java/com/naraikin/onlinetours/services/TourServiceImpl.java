@@ -2,11 +2,13 @@ package com.naraikin.onlinetours.services;
 
 import com.naraikin.onlinetours.common.exception.TourDAOException;
 import com.naraikin.onlinetours.common.exception.TourServiceException;
-import com.naraikin.onlinetours.models.dao.TourDAO;
+import com.naraikin.onlinetours.models.dao.interfaces.TourDAO;
 import com.naraikin.onlinetours.models.pojo.Tour;
 import com.naraikin.onlinetours.services.interfaces.TourService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,7 @@ public class TourServiceImpl implements TourService {
     private TourDAO tourDAO;
 
     @Autowired
+    @Qualifier("TourDAOImplH")
     public void setTourDAO(TourDAO tourDAO) {
         this.tourDAO = tourDAO;
     }

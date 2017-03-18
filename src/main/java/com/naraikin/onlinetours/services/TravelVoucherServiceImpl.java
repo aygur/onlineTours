@@ -2,12 +2,13 @@ package com.naraikin.onlinetours.services;
 
 import com.naraikin.onlinetours.common.exception.TravelVoucherDAOException;
 import com.naraikin.onlinetours.common.exception.TravelVoucherServiceException;
-import com.naraikin.onlinetours.models.dao.TravelVoucherDAO;
+import com.naraikin.onlinetours.models.dao.interfaces.TravelVoucherDAO;
 import com.naraikin.onlinetours.models.pojo.Client;
 import com.naraikin.onlinetours.models.pojo.TravelVoucher;
 import com.naraikin.onlinetours.services.interfaces.TravelVoucherService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,12 +23,11 @@ public class TravelVoucherServiceImpl implements TravelVoucherService {
     private TravelVoucherDAO travelVoucherDAO;
 
     @Autowired
+    @Qualifier("TravelVoucherDAOImplH")
     public void setTravelVoucherDAO(TravelVoucherDAO travelVoucherDAO) {
         this.travelVoucherDAO = travelVoucherDAO;
     }
-
-
-
+    
 
     public List<TravelVoucher> getAll() throws TravelVoucherServiceException {
         try {

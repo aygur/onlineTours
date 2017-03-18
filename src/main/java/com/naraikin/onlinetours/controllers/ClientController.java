@@ -107,27 +107,25 @@ public class ClientController {
                                  @RequestParam(name = "email") String email,
                                  @RequestParam(name = "role") String role) {
         logger.trace("on post");
-
-        Client client = new Client(id,
-                lastName,
-                firstName,
-                phone,
-                Date.valueOf(birthDate),
-                doc,
-                address,
-                gender,
-                login,
-                password,
-                email,
-                role,
-                (short) 0);
+        Client client;
         try {
+            client = clientService.getClientById(id);
+            client.setFirstName(firstName);
+            client.setLastName(lastName);
+            client.setPhone(phone);
+            client.setBirthDate(Date.valueOf(birthDate));
+            client.setDoc(doc);
+            client.setAddress(address);
+            client.setEmail(email);
+            client.setGender(gender);
             clientService.update(client);
             return "redirect:" + "/clients";
         } catch (ClientServiceException e) {
+            logger.error("clientService.getClientById(id) == > error");
             logger.error(e);
             return "redirect:" + "/error";
         }
+
     }
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/client/block", method = RequestMethod.POST)

@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.models.dao;
+package com.naraikin.onlinetours.models.dao.interfaces;
 
 import com.naraikin.onlinetours.common.exception.ClientDAOException;
 import com.naraikin.onlinetours.models.pojo.Client;
@@ -16,9 +16,9 @@ public interface ClientDAO {
 
     boolean setClientBlocked(Client client) throws ClientDAOException;
 
-    Client getClientByLoginAndPassword(String login, String password) throws ClientDAOException;
+    //Client getClientByLoginAndPassword(String login, String password) throws ClientDAOException;
 
-    boolean registrationClient(String login, String password, String email) throws ClientDAOException;
+    //boolean registrationClient(String login, String password, String email) throws ClientDAOException;
 
     boolean updateClient(Client client) throws ClientDAOException;
 

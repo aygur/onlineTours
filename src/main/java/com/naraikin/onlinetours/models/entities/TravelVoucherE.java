@@ -1,11 +1,15 @@
-package com.naraikin.onlinetours.models.pojo;
+package com.naraikin.onlinetours.models.entities;
 
-import com.naraikin.onlinetours.models.entities.TravelVoucherE;
+import com.naraikin.onlinetours.models.pojo.Client;
+import com.naraikin.onlinetours.models.pojo.Tour;
+import com.naraikin.onlinetours.models.pojo.VoucherStatus;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Created by dmitrii on 20.02.17.
@@ -13,19 +17,33 @@ import java.util.Date;
 @XmlType(propOrder = {"idtravel_voucher","tour", "client",
         "voucherStatus", "payment_date", "booking_date", "payment_num"})
 @XmlRootElement
-public class TravelVoucher {
+@Entity
+@Table(name = "travel_voucher")
 
+public class TravelVoucherE {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idtravel_voucher;
-    private Tour tour;
-    private Client client;
-    private VoucherStatus voucherStatus;
+
+    @ManyToOne()
+    @JoinColumn(name = "tour_id")
+    private TourE tour;
+
+    @ManyToOne()
+    @JoinColumn(name = "client_id")
+    private ClientE client;
+
+    @ManyToOne()
+    @JoinColumn(name = "status_id")
+    private VoucherStatusE voucherStatus;
     private Timestamp payment_date;
     private Timestamp booking_date;
 
-    public TravelVoucher() {
+    public TravelVoucherE() {
     }
 
-    public TravelVoucher(int idtravel_voucher, Tour tour, Client client, VoucherStatus voucherStatus, Timestamp payment_date, Timestamp booking_date, String payment_num) {
+    public TravelVoucherE(int idtravel_voucher, TourE tour, ClientE client, VoucherStatusE voucherStatus, Timestamp payment_date, Timestamp booking_date, String payment_num) {
         this.idtravel_voucher = idtravel_voucher;
         this.tour = tour;
         this.client = client;
@@ -53,19 +71,19 @@ public class TravelVoucher {
 
     private String payment_num;
 
-    public Client getClient() {
+    public ClientE getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(ClientE client) {
         this.client= client;
     }
 
-    public Tour getTour() {
+    public TourE getTour() {
         return tour;
     }
 
-    public void setTour(Tour tour) {
+    public void setTour(TourE tour) {
         this.tour = tour;
     }
 
@@ -77,11 +95,11 @@ public class TravelVoucher {
         this.idtravel_voucher = idtravel_voucher;
     }
 
-    public VoucherStatus getVoucherStatus() {
+    public VoucherStatusE getVoucherStatus() {
         return voucherStatus;
     }
 
-    public void setVoucherStatus(VoucherStatus voucherStatus) {
+    public void setVoucherStatus(VoucherStatusE voucherStatus) {
         this.voucherStatus = voucherStatus;
     }
 
@@ -98,7 +116,7 @@ public class TravelVoucher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TravelVoucher that = (TravelVoucher) o;
+        TravelVoucherE that = (TravelVoucherE) o;
 
         if (idtravel_voucher != that.idtravel_voucher) return false;
         if (tour != null ? !tour.equals(that.tour) : that.tour != null) return false;
@@ -120,32 +138,6 @@ public class TravelVoucher {
         result = 31 * result + (booking_date != null ? booking_date.hashCode() : 0);
         result = 31 * result + (payment_num != null ? payment_num.hashCode() : 0);
         return result;
-    }
-
-    public static TravelVoucher returnTravelVoucher(TravelVoucherE travelVoucherE){
-        //int idtravel_voucher, Tour tour, Client client, VoucherStatus voucherStatus,
-        // Timestamp payment_date, Timestamp booking_date, String payment_num) {
-        return new TravelVoucher(
-                travelVoucherE.getIdtravel_voucher(),
-                Tour.FromTourEToTour(travelVoucherE.getTour()),
-                Client.toClient(travelVoucherE.getClient()),
-                VoucherStatus.toVoucherStatus(travelVoucherE.getVoucherStatus()),
-                travelVoucherE.getPayment_date(),
-                travelVoucherE.getBooking_date(),
-                travelVoucherE.getPayment_num());
-    }
-
-    public static TravelVoucherE returnTravelVoucherE(TravelVoucher travelVoucher){
-        //int idtravel_voucher, Tour tour, Client client, VoucherStatus voucherStatus,
-        // Timestamp payment_date, Timestamp booking_date, String payment_num) {
-        return new TravelVoucherE(
-                travelVoucher.getIdtravel_voucher(),
-                Tour.toTourE(travelVoucher.getTour()),
-                Client.FromClientToClientE(travelVoucher.getClient()),
-                VoucherStatus.fromVoucherStatus(travelVoucher.getVoucherStatus()),
-                travelVoucher.getPayment_date(),
-                travelVoucher.getBooking_date(),
-                travelVoucher.getPayment_num());
     }
 
 }

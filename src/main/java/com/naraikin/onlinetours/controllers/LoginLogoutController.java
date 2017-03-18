@@ -46,30 +46,30 @@ public class LoginLogoutController {
         return mav;
     }
 
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String loginPostPage(@ModelAttribute("clientJSP") Client clientOut,
-                                Model model, HttpSession session){
-        try {
-            Client client = clientService.authorize(clientOut.getLogin(), clientOut.getPassword());
-            logger.trace(clientOut.getLogin()+" "+clientOut.getPassword());
-            if (client.getIdclient() != 0) {
-                logger.trace("authorized");
-                session.setAttribute("login", client.getLogin());
-                session.setAttribute("id", client.getIdclient());
-                session.setAttribute("role", client.getRole());
-                return "redirect:" + "/dashboard";
-
-            } else {
-                logger.trace("not authorized " + clientOut.getLogin());
-                model.addAttribute("error", "Неверный логин или пароль");
-                return "redirect:" + "/error";
-            }
-        } catch (ClientServiceException e) {
-            logger.error(e);
-            return "redirect:" + "/error";
-        }
-    }
+//
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    public String loginPostPage(@ModelAttribute("clientJSP") Client clientOut,
+//                                Model model, HttpSession session){
+//        try {
+//            Client client = clientService.authorize(clientOut.getLogin(), clientOut.getPassword());
+//            logger.trace(clientOut.getLogin()+" "+clientOut.getPassword());
+//            if (client.getIdclient() != 0) {
+//                logger.trace("authorized");
+//                session.setAttribute("login", client.getLogin());
+//                session.setAttribute("id", client.getIdclient());
+//                session.setAttribute("role", client.getRole());
+//                return "redirect:" + "/dashboard";
+//
+//            } else {
+//                logger.trace("not authorized " + clientOut.getLogin());
+//                model.addAttribute("error", "Неверный логин или пароль");
+//                return "redirect:" + "/error";
+//            }
+//        } catch (ClientServiceException e) {
+//            logger.error(e);
+//            return "redirect:" + "/error";
+//        }
+//    }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutGetPage(HttpSession session, HttpServletRequest request, HttpServletResponse response){

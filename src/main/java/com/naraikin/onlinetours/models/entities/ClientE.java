@@ -1,7 +1,8 @@
-package com.naraikin.onlinetours.models.pojo;
+package com.naraikin.onlinetours.models.entities;
 
-import com.naraikin.onlinetours.models.entities.ClientE;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -13,7 +14,11 @@ import javax.xml.bind.annotation.XmlType;
         "phone", "birthDate", "address", "gender",
         "doc", "login", "password", "email", "role", "blocked"}, name = "client")
 @XmlRootElement
-public class Client {
+@Entity
+@Table(name = "client")
+public class ClientE {
+
+
     private int idclient;
     private String lastName;
     private String firstName;
@@ -28,15 +33,15 @@ public class Client {
     private String role;
     private short blocked;
 
-    public Client() {
+    public ClientE() {
     }
 
-    public Client(int idclient, String lastName,
-                  String firstName, String phone,
-                  java.sql.Date birthDate, String doc,
-                  String address, String gender, String login,
-                  String password, String email, String role,
-                  short blocked) {
+    public ClientE(int idclient, String lastName,
+                   String firstName, String phone,
+                   java.sql.Date birthDate, String doc,
+                   String address, String gender, String login,
+                   String password, String email, String role,
+                   short blocked) {
         this.idclient = idclient;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -99,6 +104,8 @@ public class Client {
         this.role = role;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getIdclient() {
         return idclient;
     }
@@ -172,7 +179,7 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Client client = (Client) o;
+        ClientE client = (ClientE) o;
 
         if (idclient != client.idclient) return false;
         if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) return false;
@@ -195,37 +202,5 @@ public class Client {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         return result;
-    }
-
-    public static Client toClient(ClientE clientE){
-        return new Client(clientE.getIdclient(),
-                clientE.getLastName(),
-                clientE.getFirstName(),
-                clientE.getPhone(),
-                clientE.getBirthDate(),
-                clientE.getDoc(),
-                clientE.getAddress(),
-                clientE.getGender(),
-                clientE.getLogin(),
-                clientE.getPassword(),
-                clientE.getEmail(),
-                clientE.getRole(),
-                clientE.getBlocked());
-    }
-
-    public static ClientE FromClientToClientE(Client client){
-        return new ClientE(client.getIdclient(),
-                client.getLastName(),
-                client.getFirstName(),
-                client.getPhone(),
-                client.getBirthDate(),
-                client.getDoc(),
-                client.getAddress(),
-                client.getGender(),
-                client.getLogin(),
-                client.getPassword(),
-                client.getEmail(),
-                client.getRole(),
-                client.getBlocked());
     }
 }

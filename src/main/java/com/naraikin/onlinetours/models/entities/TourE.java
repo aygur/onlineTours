@@ -1,7 +1,8 @@
-package com.naraikin.onlinetours.models.pojo;
+package com.naraikin.onlinetours.models.entities;
 
-import com.naraikin.onlinetours.models.entities.TourE;
+import com.naraikin.onlinetours.models.pojo.Tour;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.sql.Date;
@@ -14,10 +15,12 @@ import java.sql.Date;
         "tur_type", "menu_type", "cost", "booking", "hotel",
         "city", "deleted"})
 @XmlRootElement
-public class Tour {
+@Entity
+@Table(name = "tour")
+public class TourE {
     private int idtur;
-    private java.sql.Date dateStart;
-    private java.sql.Date dateFinish;
+    private Date dateStart;
+    private Date dateFinish;
     private String tur_type;
     private String menu_type;
     private Double cost;
@@ -26,20 +29,20 @@ public class Tour {
     private String city;
     private short deleted;
 
-    public Tour() {
+    public TourE() {
     }
 
-    public Tour(int idtur){
+    public TourE(int idtur){
         this.idtur = idtur;
     }
-    public Tour(int idtur, short deleted){
+    public TourE(int idtur, short deleted){
         this.idtur = idtur;
         this.deleted = deleted;
     }
 
-    public Tour(int idtur, Date dateStart, Date dateFinish,
-                String tur_type, String menu_type, Double cost,
-                short booking, String hotel, String city, short deleted) {
+    public TourE(int idtur, Date dateStart, Date dateFinish,
+                 String tur_type, String menu_type, Double cost,
+                 short booking, String hotel, String city, short deleted) {
         this.idtur = idtur;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
@@ -60,6 +63,8 @@ public class Tour {
         this.deleted = deleted;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getIdtur() {
         return idtur;
     }
@@ -68,19 +73,19 @@ public class Tour {
         this.idtur = idtur;
     }
 
-    public java.sql.Date getDateStart() {
+    public Date getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(java.sql.Date dateStart) {
+    public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
 
-    public java.sql.Date getDateFinish() {
+    public Date getDateFinish() {
         return dateFinish;
     }
 
-    public void setDateFinish(java.sql.Date dateFinish) {
+    public void setDateFinish(Date dateFinish) {
         this.dateFinish = dateFinish;
     }
 
@@ -137,7 +142,7 @@ public class Tour {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Tour tour = (Tour) o;
+        TourE tour = (TourE) o;
 
         if (idtur != tour.idtur) return false;
         if (booking != tour.booking) return false;
@@ -162,38 +167,6 @@ public class Tour {
         result = 31 * result + (hotel != null ? hotel.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         return result;
-    }
-
-    public static TourE toTourE(Tour tour) {
-//        int idtur, Date dateStart, Date dateFinish,
-//                String tur_type, String menu_type, Double cost,
-//        short booking, String hotel, String city, short deleted
-        return new TourE(tour.getIdtur(),
-                tour.getDateStart(),
-                tour.getDateFinish(),
-                tour.getTur_type(),
-                tour.getMenu_type(),
-                tour.getCost(),
-                tour.getBooking(),
-                tour.getHotel(),
-                tour.getCity(),
-                tour.getDeleted());
-    }
-
-    public static Tour FromTourEToTour (TourE tour) {
-//        int idtur, Date dateStart, Date dateFinish,
-//                String tur_type, String menu_type, Double cost,
-//        short booking, String hotel, String city, short deleted
-        return new Tour(tour.getIdtur(),
-                tour.getDateStart(),
-                tour.getDateFinish(),
-                tour.getTur_type(),
-                tour.getMenu_type(),
-                tour.getCost(),
-                tour.getBooking(),
-                tour.getHotel(),
-                tour.getCity(),
-                tour.getDeleted());
     }
 
 }

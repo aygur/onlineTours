@@ -2,6 +2,7 @@ package com.naraikin.onlinetours.models.dao;
 
 import com.naraikin.onlinetours.common.exception.ClientDAOException;
 import com.naraikin.onlinetours.models.connector.Connector;
+import com.naraikin.onlinetours.models.dao.interfaces.ClientDAO;
 import com.naraikin.onlinetours.models.pojo.Client;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,6 @@
-package com.naraikin.onlinetours.models.pojo;
+package com.naraikin.onlinetours.models.entities;
 
-import com.naraikin.onlinetours.models.entities.VoucherStatusE;
-
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -10,18 +9,21 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(propOrder = {"idvoucher_status","status"})
 @XmlRootElement
-public class VoucherStatus {
+@Entity
+@Table(name = "voucher_status")
+public class VoucherStatusE {
     private int idvoucher_status;
     private String status;
 
-    public VoucherStatus() {
+    public VoucherStatusE() {
     }
 
-    public VoucherStatus(int idvoucher_status, String status) {
+    public VoucherStatusE(int idvoucher_status, String status) {
         this.idvoucher_status = idvoucher_status;
         this.status = status;
     }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getIdvoucher_status() {
         return idvoucher_status;
     }
@@ -43,7 +45,7 @@ public class VoucherStatus {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        VoucherStatus that = (VoucherStatus) o;
+        VoucherStatusE that = (VoucherStatusE) o;
 
         if (idvoucher_status != that.idvoucher_status) return false;
         return status.equals(that.status);
@@ -54,15 +56,5 @@ public class VoucherStatus {
         int result = idvoucher_status;
         result = 31 * result + status.hashCode();
         return result;
-    }
-
-    public static VoucherStatus toVoucherStatus(VoucherStatusE voucherStatusE){
-        return new VoucherStatus(voucherStatusE.getIdvoucher_status(),
-                voucherStatusE.getStatus());
-    }
-
-    public static VoucherStatusE fromVoucherStatus(VoucherStatus voucherStatus){
-        return new VoucherStatusE(voucherStatus.getIdvoucher_status(),
-                voucherStatus.getStatus());
     }
 }

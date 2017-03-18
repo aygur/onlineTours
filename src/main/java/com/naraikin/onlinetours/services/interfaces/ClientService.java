@@ -9,11 +9,8 @@ import java.util.List;
  * Created by dmitrii on 03.03.17.
  */
 public interface ClientService {
-    Client authorize(String login, String password) throws ClientServiceException;
 
     boolean registration(Client client) throws ClientServiceException;
-
-    boolean registration(String login, String password, String email) throws ClientServiceException;
 
     boolean update(Client client) throws ClientServiceException;
 

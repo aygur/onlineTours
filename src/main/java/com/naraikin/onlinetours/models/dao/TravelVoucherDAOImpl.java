@@ -5,6 +5,10 @@ import com.naraikin.onlinetours.common.exception.TourDAOException;
 import com.naraikin.onlinetours.common.exception.TravelVoucherDAOException;
 import com.naraikin.onlinetours.common.exception.VoucherStatusDAOException;
 import com.naraikin.onlinetours.models.connector.Connector;
+import com.naraikin.onlinetours.models.dao.interfaces.ClientDAO;
+import com.naraikin.onlinetours.models.dao.interfaces.TourDAO;
+import com.naraikin.onlinetours.models.dao.interfaces.TravelVoucherDAO;
+import com.naraikin.onlinetours.models.dao.interfaces.VoucherStatusDAO;
 import com.naraikin.onlinetours.models.pojo.Client;
 import com.naraikin.onlinetours.models.pojo.Tour;
 import com.naraikin.onlinetours.models.pojo.TravelVoucher;
@@ -23,27 +27,28 @@ import java.util.List;
 /**
  * Created by dmitrii on 07.03.17.
  */
-@Repository
+@Repository("TravelVoucherDAOImpl")
 public class TravelVoucherDAOImpl implements TravelVoucherDAO {
 
     private TourDAO tourDAO;
+    private ClientDAO clientDAO;
+    private VoucherStatusDAO voucherStatusDAO;
 
     @Autowired
+    @Qualifier("TourDAOImplH")
     public void setTourDAO(TourDAO tourDAO) {
         this.tourDAO = tourDAO;
     }
 
-    private ClientDAO clientDAO;
-
     @Autowired
+    @Qualifier("ClientDAOImplH")
     public void setClientDAO(ClientDAO clientDAO) {
         this.clientDAO = clientDAO;
     }
 
-
-    private VoucherStatusDAOImpl voucherStatusDAO;
     @Autowired
-    public void setVoucherStatusDAO(VoucherStatusDAOImpl voucherStatusDAO) {
+    @Qualifier("VoucherStatusDAOImplH")
+    public void setVoucherStatusDAO(VoucherStatusDAO voucherStatusDAO) {
         this.voucherStatusDAO = voucherStatusDAO;
     }
 

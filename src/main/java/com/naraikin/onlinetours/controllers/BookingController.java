@@ -123,6 +123,9 @@ public class BookingController {
     public String cancelTourPostPage(Model model, @RequestParam(name = "id") Integer id) {
         try {
             TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
+            Tour tour = travelVoucher.getTour();
+            tour.setBooking((short)0);
+            travelVoucher.setTour(tour);
             travelVoucherService.deleteTravelVoucher(travelVoucher);
             //model.addAttribute("errors", "Бронирование тура "+id + " отменено");
             return "redirect:/dashboard";
@@ -160,6 +163,7 @@ public class BookingController {
             if(this.sum == sum_user){
                 travelVoucher.setPayment_date(Timestamp.valueOf(LocalDateTime.now()));
                 travelVoucher.setPayment_num(sum_user.toString()+Timestamp.valueOf(LocalDateTime.now()).getTime());
+                travelVoucher.setVoucherStatus(voucherStatusService.getVoucherStatusById(2));
                 travelVoucherService.updateTravelVoucher(travelVoucher);
                 model.addAttribute("travelVoucher", travelVoucher);
                 return "redirect:/voucher?idtur="+id;
