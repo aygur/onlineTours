@@ -2,6 +2,7 @@ package com.naraikin.onlinetours.models.dao;
 
 import com.naraikin.onlinetours.common.exception.VoucherStatusDAOException;
 import com.naraikin.onlinetours.models.connector.Connector;
+import com.naraikin.onlinetours.models.dao.interfaces.VoucherStatusDAO;
 import com.naraikin.onlinetours.models.pojo.VoucherStatus;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Created by dmitrii on 05.03.17.
  */
-@Repository
+@Repository("VoucherStatusDAOImpl")
 public class VoucherStatusDAOImpl implements VoucherStatusDAO {
 
     private static Logger logger = Logger.getLogger(VoucherStatusDAOImpl.class);

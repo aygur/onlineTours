@@ -16,6 +16,11 @@
 <p>
     Все хорошо, попробуйте позже.
 </p>
+<p>${exception}</p>
+<p>
+    ${url}
+</p>
+<br>
 <a href="/dashboard">На главную</a>
 </body>
 </html>

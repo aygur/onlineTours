@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.models.dao;
+package com.naraikin.onlinetours.models.dao.interfaces;
 
 import com.naraikin.onlinetours.common.exception.ClientDAOException;
 import com.naraikin.onlinetours.common.exception.TourDAOException;
@@ -19,6 +19,7 @@ public interface TourDAO {
     public void update(Tour tour) throws TourDAOException;
 
     public List<Tour> getAll() throws TourDAOException;
+    List<Tour> getAllTourForClient() throws TourDAOException;
 
     public Tour getTourById(int id) throws TourDAOException;
 }

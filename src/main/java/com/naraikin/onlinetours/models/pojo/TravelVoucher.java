@@ -1,5 +1,7 @@
 package com.naraikin.onlinetours.models.pojo;
 
+import com.naraikin.onlinetours.models.entities.TravelVoucherE;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.sql.Timestamp;
@@ -19,6 +21,19 @@ public class TravelVoucher {
     private VoucherStatus voucherStatus;
     private Timestamp payment_date;
     private Timestamp booking_date;
+
+    public TravelVoucher() {
+    }
+
+    public TravelVoucher(int idtravel_voucher, Tour tour, Client client, VoucherStatus voucherStatus, Timestamp payment_date, Timestamp booking_date, String payment_num) {
+        this.idtravel_voucher = idtravel_voucher;
+        this.tour = tour;
+        this.client = client;
+        this.voucherStatus = voucherStatus;
+        this.payment_date = payment_date;
+        this.booking_date = booking_date;
+        this.payment_num = payment_num;
+    }
 
     public Timestamp getPayment_date() {
         return payment_date;
@@ -106,4 +121,31 @@ public class TravelVoucher {
         result = 31 * result + (payment_num != null ? payment_num.hashCode() : 0);
         return result;
     }
+
+    public static TravelVoucher returnTravelVoucher(TravelVoucherE travelVoucherE){
+        //int idtravel_voucher, Tour tour, Client client, VoucherStatus voucherStatus,
+        // Timestamp payment_date, Timestamp booking_date, String payment_num) {
+        return new TravelVoucher(
+                travelVoucherE.getIdtravel_voucher(),
+                Tour.FromTourEToTour(travelVoucherE.getTour()),
+                Client.toClient(travelVoucherE.getClient()),
+                VoucherStatus.toVoucherStatus(travelVoucherE.getVoucherStatus()),
+                travelVoucherE.getPayment_date(),
+                travelVoucherE.getBooking_date(),
+                travelVoucherE.getPayment_num());
+    }
+
+    public static TravelVoucherE returnTravelVoucherE(TravelVoucher travelVoucher){
+        //int idtravel_voucher, Tour tour, Client client, VoucherStatus voucherStatus,
+        // Timestamp payment_date, Timestamp booking_date, String payment_num) {
+        return new TravelVoucherE(
+                travelVoucher.getIdtravel_voucher(),
+                Tour.toTourE(travelVoucher.getTour()),
+                Client.FromClientToClientE(travelVoucher.getClient()),
+                VoucherStatus.fromVoucherStatus(travelVoucher.getVoucherStatus()),
+                travelVoucher.getPayment_date(),
+                travelVoucher.getBooking_date(),
+                travelVoucher.getPayment_num());
+    }
+
 }

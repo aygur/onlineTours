@@ -13,7 +13,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-md-8">
 <h3>Список тур. путевок</h3>
             <table class="table table-hover">
                 <thead>
@@ -30,8 +30,8 @@
                 <td>Номер оплаты</td>
                 <td>Статус</td>
                 <td>Покупатель</td>
-                <td>Операции</td>
                 </thead>
+                <tbody>
                 <c:forEach items="${travelVouchers}" var="travelVoucher">
                     <tr>
                         <td>${travelVoucher.idtravel_voucher}</td>
@@ -45,12 +45,13 @@
                         <td>${travelVoucher.booking_date}</td>
                         <td>${travelVoucher.payment_num}</td>
                         <td>${travelVoucher.voucherStatus.status}</td>
-                        <td><a href="/client/details?id=${travelVoucher.client.idclient}">
-                                ${travelVoucher.client.firstName} ${travelVoucher.client.lastName}</a></td>
-                        <td><a href="/tour/details?id=${travelVoucher.tour.idtur}">${travelVoucher.tour.idtur}</a>
-
+                        <td>
+                            <a href="/client/details?id=${travelVoucher.client.idclient}">
+                                ${travelVoucher.client.firstName} ${travelVoucher.client.lastName}</a>
+                        </td>
                     </tr>
                 </c:forEach>
+                </tbody>
             </table>
 
 

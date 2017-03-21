@@ -8,6 +8,9 @@ import com.naraikin.onlinetours.services.interfaces.ClientService;
 import com.naraikin.onlinetours.services.interfaces.TravelVoucherService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,10 +42,10 @@ public class ClientController {
         this.travelVoucherService = travelVoucherService;
     }
 
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(value = "/clients", method = RequestMethod.GET)
     public String listClientGetPage(Model model, HttpSession session) {
         logger.trace("GET");
-        String userName = (String) session.getAttribute("login");
         try {
             List<Client> clients = clientService.getAllClient();
             model.addAttribute("clients", clients);
@@ -71,15 +74,16 @@ public class ClientController {
 
     @RequestMapping(value = "/client/edit", method = RequestMethod.GET)
     public String clientGetPage(Model model,
-                                @RequestParam(name = "id", defaultValue = "0") Integer id,
-                                HttpSession session) {
+                                @RequestParam(name = "id", defaultValue = "0") Integer id) {
         logger.trace("GET");
         Client client = null;
         try {
             if (id > 0) {
                 client = clientService.getClientById(id);
             } else {
-                client = clientService.getClientById((Integer) session.getAttribute("id"));
+                Authentication
+                        auth = SecurityContextHolder.getContext().getAuthentication();
+                client = clientService.getClientByLogin(auth.getName());
             }
             model.addAttribute("client", client);
             return "client/edit";
@@ -103,29 +107,27 @@ public class ClientController {
                                  @RequestParam(name = "email") String email,
                                  @RequestParam(name = "role") String role) {
         logger.trace("on post");
-
-        Client client = new Client(id,
-                lastName,
-                firstName,
-                phone,
-                Date.valueOf(birthDate),
-                doc,
-                address,
-                gender,
-                login,
-                password,
-                email,
-                role,
-                (short) 0);
+        Client client;
         try {
+            client = clientService.getClientById(id);
+            client.setFirstName(firstName);
+            client.setLastName(lastName);
+            client.setPhone(phone);
+            client.setBirthDate(Date.valueOf(birthDate));
+            client.setDoc(doc);
+            client.setAddress(address);
+            client.setEmail(email);
+            client.setGender(gender);
             clientService.update(client);
-            return "redirect:" + "/client";
+            return "redirect:" + "/clients";
         } catch (ClientServiceException e) {
+            logger.error("clientService.getClientById(id) == > error");
             logger.error(e);
             return "redirect:" + "/error";
         }
-    }
 
+    }
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/client/block", method = RequestMethod.POST)
     public String clientBlockPostPage(@RequestParam(name = "id") Integer id,
                                  @RequestParam(name = "block") Short block) {
@@ -140,17 +142,20 @@ public class ClientController {
         try {
             client.setBlocked(block);
             clientService.setClientBlocked(client);
-            return "redirect:" + "/client";
+            return "redirect:" + "/clients";
         } catch (ClientServiceException e) {
             logger.error(e);
             return "redirect:" + "/error";
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/LKClient", method = RequestMethod.GET)
-    public String lKClientGetPage(Model model, HttpSession session) {
+    public String lKClientGetPage(Model model) {
         try {
-            Client client = clientService.getClientById((Integer) session.getAttribute("id"));
+            Authentication
+                    auth = SecurityContextHolder.getContext().getAuthentication();
+            Client client = clientService.getClientByLogin(auth.getName());
             List<TravelVoucher> travelVouchers = travelVoucherService.getAllByClient(client);
             model.addAttribute("client", client);
             model.addAttribute("travelVouchers", travelVouchers);
@@ -159,9 +164,6 @@ public class ClientController {
             logger.error(e);
             return "redirect:" + "/error";
         }
-
-
-
 
     }
 }

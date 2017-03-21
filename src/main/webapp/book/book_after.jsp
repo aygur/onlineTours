@@ -24,7 +24,6 @@
     <td>Отель</td>
     <td>Расположение</td>
     <td>Date booking</td>
-    <td>Операции</td>
     </thead>
     <tr>
         <td>${travelVoucher.tour.dateStart}</td>

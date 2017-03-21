@@ -44,28 +44,28 @@ public class LoginServlet extends HttpServlet {
         req.getRequestDispatcher("client/login.jsp").forward(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.trace("POST");
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
-        HttpSession session = req.getSession();
-        try {
-            Client client = clientService.authorize(login, password);
-            if (client.getIdclient() != 0) {
-                logger.trace("authorized");
-                resp.sendRedirect("/dashboard");
-                session.setAttribute("login", login);
-                session.setAttribute("id", client.getIdclient());
-            } else {
-                logger.trace("not authorized " + login);
-                req.setAttribute("error","Неверный логин или пароль");
-                req.getRequestDispatcher("client/login.jsp").forward(req, resp);
-            }
-        } catch (ClientServiceException e) {
-            logger.error(e);
-            resp.sendRedirect("/error");
-        }
-
-    }
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        logger.trace("POST");
+//        String login = req.getParameter("login");
+//        String password = req.getParameter("password");
+//        HttpSession session = req.getSession();
+//        try {
+//            Client client = new Client();//clientService.authorize(login, password);
+//            if (client.getIdclient() != 0) {
+//                logger.trace("authorized");
+//                resp.sendRedirect("/dashboard");
+//                session.setAttribute("login", login);
+//                session.setAttribute("id", client.getIdclient());
+//            } else {
+//                logger.trace("not authorized " + login);
+//                req.setAttribute("error","Неверный логин или пароль");
+//                req.getRequestDispatcher("client/login.jsp").forward(req, resp);
+//            }
+//        } catch (ClientServiceException e) {
+//            logger.error(e);
+//            resp.sendRedirect("/error");
+//        }
+//
+//    }
 }

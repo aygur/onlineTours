@@ -1,5 +1,7 @@
 package com.naraikin.onlinetours.models.pojo;
 
+import com.naraikin.onlinetours.models.entities.ClientE;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -193,5 +195,37 @@ public class Client {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         return result;
+    }
+
+    public static Client toClient(ClientE clientE){
+        return new Client(clientE.getIdclient(),
+                clientE.getLastName(),
+                clientE.getFirstName(),
+                clientE.getPhone(),
+                clientE.getBirthDate(),
+                clientE.getDoc(),
+                clientE.getAddress(),
+                clientE.getGender(),
+                clientE.getLogin(),
+                clientE.getPassword(),
+                clientE.getEmail(),
+                clientE.getRole(),
+                clientE.getBlocked());
+    }
+
+    public static ClientE FromClientToClientE(Client client){
+        return new ClientE(client.getIdclient(),
+                client.getLastName(),
+                client.getFirstName(),
+                client.getPhone(),
+                client.getBirthDate(),
+                client.getDoc(),
+                client.getAddress(),
+                client.getGender(),
+                client.getLogin(),
+                client.getPassword(),
+                client.getEmail(),
+                client.getRole(),
+                client.getBlocked());
     }
 }

@@ -11,11 +11,10 @@
 <%@ include file="../template/head.jsp" %>
 <%@ include file="../template/body-head.jsp" %>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-md-7">
 
-<a href="/tour/add">Добавить Тур</a>
     <table class="table table-hover">
         <thead>
         <td>Дата начала</td>
@@ -40,14 +39,16 @@
                 <td>${tourItem.city}</td>
                 <td>${tourItem.booking}</td>
                 <td>${tourItem.deleted}</td>
-                <td><a href="/tour/edit?id=${tourItem.idtur}">Edit</a>
-                <td><a href="/tour/details?id=${tourItem.idtur}">Details</a>
-                <td><a href="/book_before?idtur=${tourItem.idtur}">Booking</a>
+                <td>
+                    <a href="/tour/edit?id=${tourItem.idtur}">Edit</a>
+                <a href="/tour/details?id=${tourItem.idtur}">Details</a>
+                <a href="/book_before?idtur=${tourItem.idtur}">Booking</a>
                 <form action="/tour/delete" method="post">
                     <input type="hidden" name="idtur" id="idtur" value="${tourItem.idtur}" >
                     <input type="hidden" name="deleted" id="deleted" value="${tourItem.deleted}" >
                     <input type="submit" value="Delete">
                 </form>
+                </td>
 
             </tr>
         </c:forEach>

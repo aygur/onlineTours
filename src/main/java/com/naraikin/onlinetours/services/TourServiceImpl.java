@@ -2,11 +2,13 @@ package com.naraikin.onlinetours.services;
 
 import com.naraikin.onlinetours.common.exception.TourDAOException;
 import com.naraikin.onlinetours.common.exception.TourServiceException;
-import com.naraikin.onlinetours.models.dao.TourDAO;
+import com.naraikin.onlinetours.models.dao.interfaces.TourDAO;
 import com.naraikin.onlinetours.models.pojo.Tour;
 import com.naraikin.onlinetours.services.interfaces.TourService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +20,23 @@ import java.util.List;
 public class TourServiceImpl implements TourService {
     private static Logger logger = Logger.getLogger(TourServiceImpl.class);
 
-    @Autowired
+
     private TourDAO tourDAO;
 
-
+    @Autowired
+    @Qualifier("TourDAOImplH")
     public void setTourDAO(TourDAO tourDAO) {
         this.tourDAO = tourDAO;
+    }
+
+    public List<Tour> getAllTourForClient() throws TourServiceException{
+        try {
+            return tourDAO.getAllTourForClient();
+        } catch (TourDAOException e) {
+            logger.error(e);
+            throw new TourServiceException();
+        }
+
     }
 
     public List<Tour> getAllTour() throws TourServiceException {
@@ -78,5 +91,9 @@ public class TourServiceImpl implements TourService {
             logger.error(e);
             throw new TourServiceException();
         }
+    }
+
+    public boolean isBookingNow(Tour tour) throws TourServiceException {
+       return tour.getBooking() > 0;
     }
 }

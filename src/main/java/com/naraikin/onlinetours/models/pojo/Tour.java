@@ -1,5 +1,7 @@
 package com.naraikin.onlinetours.models.pojo;
 
+import com.naraikin.onlinetours.models.entities.TourE;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.sql.Date;
@@ -161,4 +163,37 @@ public class Tour {
         result = 31 * result + (city != null ? city.hashCode() : 0);
         return result;
     }
+
+    public static TourE toTourE(Tour tour) {
+//        int idtur, Date dateStart, Date dateFinish,
+//                String tur_type, String menu_type, Double cost,
+//        short booking, String hotel, String city, short deleted
+        return new TourE(tour.getIdtur(),
+                tour.getDateStart(),
+                tour.getDateFinish(),
+                tour.getTur_type(),
+                tour.getMenu_type(),
+                tour.getCost(),
+                tour.getBooking(),
+                tour.getHotel(),
+                tour.getCity(),
+                tour.getDeleted());
+    }
+
+    public static Tour FromTourEToTour (TourE tour) {
+//        int idtur, Date dateStart, Date dateFinish,
+//                String tur_type, String menu_type, Double cost,
+//        short booking, String hotel, String city, short deleted
+        return new Tour(tour.getIdtur(),
+                tour.getDateStart(),
+                tour.getDateFinish(),
+                tour.getTur_type(),
+                tour.getMenu_type(),
+                tour.getCost(),
+                tour.getBooking(),
+                tour.getHotel(),
+                tour.getCity(),
+                tour.getDeleted());
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.naraikin.onlinetours.models.dao;
+package com.naraikin.onlinetours.models.dao.interfaces;
 
 import com.naraikin.onlinetours.common.exception.TravelVoucherDAOException;
 import com.naraikin.onlinetours.models.pojo.Client;

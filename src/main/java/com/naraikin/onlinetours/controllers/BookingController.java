@@ -13,6 +13,9 @@ import com.naraikin.onlinetours.services.interfaces.TravelVoucherService;
 import com.naraikin.onlinetours.services.interfaces.VoucherStatusService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +33,8 @@ import java.util.Random;
 @Controller
 public class BookingController {
     static Logger logger = Logger.getLogger(BookingController.class);
+
     private Integer sum;
-
-
     private TourService tourService;
     private ClientService clientService;
     private VoucherStatusService voucherStatusService;
@@ -58,11 +60,12 @@ public class BookingController {
         this.clientService = clientService;
     }
 
-
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/book_before", method = RequestMethod.GET)
     public String bookingTourGetPage(Model model, @RequestParam(name = "idtur") Integer idtur) {
         try {
             Tour tour = tourService.getTourById(idtur);
+
             model.addAttribute("tourItem", tour);
             return "book/book_before";
         } catch (TourServiceException e) {
@@ -71,17 +74,22 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/book_before", method = RequestMethod.POST)
-    public String bookingTourPostPage(HttpSession session,
-                                      @RequestParam(name = "idtur") Integer idtur) {
+    public String bookingTourPostPage(@RequestParam(name = "idtur") Integer idtur) {
         try {
             TravelVoucher voucher = new TravelVoucher();
 
             Tour tour = tourService.getTourById(idtur);
+            if(tourService.isBookingNow(tour)){
+                return "redirect:" + "/error"; //// Быстрая проверка
+            }
             tour.setBooking((short)1);
             voucher.setTour(tour);
 
-            Client client = clientService.getClientById((int) session.getAttribute("id"));
+            Authentication
+                    auth = SecurityContextHolder.getContext().getAuthentication();
+            Client client = clientService.getClientByLogin(auth.getName());
             voucher.setClient(client);
 
             VoucherStatus voucherStatus = voucherStatusService.getVoucherStatusById(1);
@@ -97,6 +105,7 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/book_after", method = RequestMethod.GET)
     public String afterTourGetPage(Model model, @RequestParam(name = "id") Integer id) {
         try {
@@ -109,11 +118,16 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/book_cancel", method = RequestMethod.POST)
     public String cancelTourPostPage(Model model, @RequestParam(name = "id") Integer id) {
         try {
             TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
+            Tour tour = travelVoucher.getTour();
+            tour.setBooking((short)0);
+            travelVoucher.setTour(tour);
             travelVoucherService.deleteTravelVoucher(travelVoucher);
+            //model.addAttribute("errors", "Бронирование тура "+id + " отменено");
             return "redirect:/dashboard";
         } catch (TravelVoucherServiceException e) {
             logger.error(e);
@@ -121,13 +135,14 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/bank", method = RequestMethod.GET)
     public String bankGetPage(Model model, @RequestParam(name = "idtur") Integer id) {
         try {
             TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
             Random random = new Random();
-            Integer oneS = random.nextInt(100);
-            Integer twoS = random.nextInt(50);
+            Integer oneS = random.nextInt(10);
+            Integer twoS = random.nextInt(10);
             this.sum = oneS + twoS;
             model.addAttribute("travelVoucher", travelVoucher);
             model.addAttribute("one", oneS);
@@ -139,6 +154,7 @@ public class BookingController {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/bank", method = RequestMethod.POST)
     public String bankPostPage(Model model, @RequestParam(name = "idtur") Integer id,
                                @RequestParam(name = "sum_user")Integer sum_user) {
@@ -147,18 +163,19 @@ public class BookingController {
             if(this.sum == sum_user){
                 travelVoucher.setPayment_date(Timestamp.valueOf(LocalDateTime.now()));
                 travelVoucher.setPayment_num(sum_user.toString()+Timestamp.valueOf(LocalDateTime.now()).getTime());
+                travelVoucher.setVoucherStatus(voucherStatusService.getVoucherStatusById(2));
                 travelVoucherService.updateTravelVoucher(travelVoucher);
                 model.addAttribute("travelVoucher", travelVoucher);
-                return "book/book_finish";
-            } else{
+                return "redirect:/voucher?idtur="+id;
+            } else {
                 Random random = new Random();
-                Integer oneS = random.nextInt(100);
-                Integer twoS = random.nextInt(50);
+                Integer oneS = random.nextInt(10);
+                Integer twoS = random.nextInt(10);
                 this.sum = oneS + twoS;
                 model.addAttribute("one", oneS);
                 model.addAttribute("two", twoS);
+                model.addAttribute("errors", "Оплата не прошла, повтор");
                 model.addAttribute("travelVoucher", travelVoucher);
-                model.addAttribute("error", "Оплата не прошла, повтор");
                 return "book/book_bank";
             }
 
@@ -168,5 +185,16 @@ public class BookingController {
         }
     }
 
-
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @RequestMapping(value = "/voucher", method = RequestMethod.GET)
+    public String voucherGetPage(Model model, @RequestParam(name = "idtur") Integer id) {
+        try {
+            TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
+            model.addAttribute("travelVoucher", travelVoucher);
+            return "book/book_finish";
+        } catch (TravelVoucherServiceException e) {
+            logger.error(e);
+            return "redirect:" + "/error";
+        }
+    }
 }

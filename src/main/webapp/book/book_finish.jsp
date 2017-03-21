@@ -13,7 +13,7 @@
 <%@ include file="../template/body-head.jsp" %>
 
 <h3>Туристический ваучер</h3>
-<p>Туристический ваучер оплачен, жалаем Вам приятного отдыха</p>
+<p>Туристический ваучер оплачен, желаем Вам приятного отдыха</p>
 <table class="table table-hover">
     <thead>
     <td>Дата начала</td>
@@ -25,6 +25,8 @@
     <td>Расположение</td>
     <td>Date booking</td>
     <td>Дата оплаты</td>
+    <td>Статус</td>
+    <td>Покупатель</td>
     </thead>
     <tr>
         <td>${travelVoucher.tour.dateStart}</td>
@@ -37,6 +39,8 @@
         <td>${travelVoucher.booking_date}</td>
         <td>${travelVoucher.payment_num}</td>
         <td>${travelVoucher.voucherStatus.status}</td>
+        <td>${travelVoucher.client.firstName} ${travelVoucher.client.lastName}</td>
+
     </tr>
 </table>
 

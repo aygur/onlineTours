@@ -36,10 +36,9 @@
         <td>${travelVoucher.tour.city}</td>
         <td>${travelVoucher.booking_date}</td>
         <form action="/bank" method="post">
-            <c:out value="${error}"></c:out>
-            <c:out value="${one} "></c:out>
-            <label>${one} + ${two} = ?</label>
-            <input type="text" name="sum_user" id="sum_user" value="">
+            <h3>${error}</h3>
+            <label>${one} + ${two} = </label>
+            <input type="text" name="sum_user" id="sum_user" value="" placeholder="Введите сумму">
             <input type="hidden" name="idtur" id="idtur" value="${travelVoucher.idtravel_voucher}" >
             <input type="submit" value="Оплатить">
         </form>
