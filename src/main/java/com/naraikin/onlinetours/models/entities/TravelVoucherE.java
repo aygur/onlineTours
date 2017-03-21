@@ -39,6 +39,9 @@ public class TravelVoucherE {
     private VoucherStatusE voucherStatus;
     private Timestamp payment_date;
     private Timestamp booking_date;
+    @Version
+    private long version;
+
 
     public TravelVoucherE() {
     }

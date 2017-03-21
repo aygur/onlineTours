@@ -32,6 +32,8 @@ public class ClientE {
     private String email;
     private String role;
     private short blocked;
+    @Version
+    private long version;
 
     public ClientE() {
     }

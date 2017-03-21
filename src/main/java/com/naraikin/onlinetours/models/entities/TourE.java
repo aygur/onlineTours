@@ -28,6 +28,16 @@ public class TourE {
     private String hotel;
     private String city;
     private short deleted;
+    @Version
+    private long version;
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
 
     public TourE() {
     }

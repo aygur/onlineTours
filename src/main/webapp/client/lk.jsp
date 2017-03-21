@@ -92,7 +92,7 @@
                         Password
                     </td>
                     <td>
-                        ${client.password}
+
                     </td>
                 </tr>
                 <tr>

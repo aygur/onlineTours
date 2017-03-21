@@ -41,8 +41,8 @@ public class ClientDAOImplH implements ClientDAO {
 
     public List<Client> getAll() throws ClientDAOException {
         List<Client> list = new ArrayList<>();
-        CriteriaBuilder builder = FACTORY.getCriteriaBuilder();
         EntityManager em = FACTORY.createEntityManager();
+        CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<ClientE> criteria = builder.createQuery( ClientE.class );
         Root<ClientE> root = criteria.from( ClientE.class );
         criteria.select( root );
@@ -60,7 +60,9 @@ public class ClientDAOImplH implements ClientDAO {
         EntityManager entityManager = FACTORY.createEntityManager();
         EntityTransaction txn = entityManager.getTransaction();
         txn.begin();
-        entityManager.merge( Client.FromClientToClientE(client ));
+        ClientE clientE = entityManager.find(ClientE.class, client.getIdclient());
+        clientE.setBlocked(client.getBlocked());
+        entityManager.merge( clientE );
         logger.trace( "setClientBlocked ==> Hibernate" );
         txn.commit();
         return true;

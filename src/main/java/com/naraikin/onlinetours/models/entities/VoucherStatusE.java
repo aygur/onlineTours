@@ -14,6 +14,9 @@ import javax.xml.bind.annotation.XmlType;
 public class VoucherStatusE {
     private int idvoucher_status;
     private String status;
+    @Version
+    private long version;
+
 
     public VoucherStatusE() {
     }

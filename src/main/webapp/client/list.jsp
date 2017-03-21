@@ -40,7 +40,7 @@
             <td>${client.address}</td>
             <td>${client.gender}</td>
             <td>${client.login}</td>
-            <td>${client.password}</td>
+            <td>.</td>
             <td>${client.email}</td>
             <td>${client.role}</td>
             <td>${client.blocked}</td>
