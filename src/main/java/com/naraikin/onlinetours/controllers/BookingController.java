@@ -85,6 +85,7 @@ public class BookingController {
                 return "redirect:" + "/error"; //// Быстрая проверка
             }
             tour.setBooking((short)1);
+            tourService.setBooking(tour);
             voucher.setTour(tour);
 
             Authentication
@@ -125,14 +126,21 @@ public class BookingController {
             TravelVoucher travelVoucher = travelVoucherService.getTravelVoucherById(id);
             Tour tour = travelVoucher.getTour();
             tour.setBooking((short)0);
+            //tourService.setBooking(tour);
             travelVoucher.setTour(tour);
+
             travelVoucherService.deleteTravelVoucher(travelVoucher);
+
             //model.addAttribute("errors", "Бронирование тура "+id + " отменено");
             return "redirect:/dashboard";
         } catch (TravelVoucherServiceException e) {
             logger.error(e);
             return "redirect:" + "/error";
         }
+//        } catch (TourServiceException e) {
+//            logger.error(e);
+//            return "redirect:" + "/error";
+//        }
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})

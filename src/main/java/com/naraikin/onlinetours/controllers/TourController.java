@@ -157,8 +157,9 @@ public class TourController {
         } else {
             deleted = 1;
         }
-        Tour tour = new Tour(idtur, deleted);
         try {
+            Tour tour = tourService.getTourById(idtur);
+            tour.setDeleted(deleted);
             tourService.setDeleteTour(tour);
             return "redirect:" + "/dashboard";
 

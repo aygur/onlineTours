@@ -1,15 +1,12 @@
-package com.naraikin.onlinetours.services;
+package com.naraikin.onlinetours.services.imp_deprecated;
 
-import com.naraikin.onlinetours.common.exception.ClientDAOException;
 import com.naraikin.onlinetours.common.exception.ClientServiceException;
-import com.naraikin.onlinetours.models.dao.interfaces.ClientDAO;
 import com.naraikin.onlinetours.models.entities.ClientE;
 import com.naraikin.onlinetours.models.pojo.Client;
 import com.naraikin.onlinetours.models.repository.ClientRepository;
 import com.naraikin.onlinetours.services.interfaces.ClientService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +16,24 @@ import java.util.List;
 /**
  * Created by dmitrii on 23.02.17.
  */
-@Component("ClientServiceImpl")
+//@Component("ClientServiceImpl")
+@Deprecated
 public class ClientServiceImpl implements ClientService {
     static Logger logger = Logger.getLogger(ClientServiceImpl.class);
 
 
     private ClientRepository clientRepository;
 
-    @Autowired
+    //@Autowired
     public void setClientRepository(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
+
+    /*@Qualifier("ClientDAOImplH")
+    public void setClientDAO(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
+    }
+*/
 
     public boolean registration(Client client) throws ClientServiceException {
             String password = client.getPassword();

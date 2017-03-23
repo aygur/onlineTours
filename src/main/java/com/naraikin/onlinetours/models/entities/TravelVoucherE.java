@@ -26,12 +26,12 @@ public class TravelVoucherE {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idtravel_voucher;
 
-    @ManyToOne()
-    @JoinColumn(name = "tour_id")
+    @OneToOne()
+    @JoinColumn(name = "tour_id", updatable = true)
     private TourE tour;
 
     @ManyToOne()
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", updatable = true)
     private ClientE client;
 
     @ManyToOne()

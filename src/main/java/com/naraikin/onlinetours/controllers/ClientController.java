@@ -132,14 +132,16 @@ public class ClientController {
     public String clientBlockPostPage(@RequestParam(name = "id") Integer id,
                                  @RequestParam(name = "block") Short block) {
         logger.trace("on post");
-        Client client = new Client();
-        client.setIdclient(id);
+
+
+        
         if (block == 0) {
             block = 1;
         } else {
             block = 0;
         }
         try {
+            Client client = clientService.getClientById(id);
             client.setBlocked(block);
             clientService.setClientBlocked(client);
             return "redirect:" + "/clients";
